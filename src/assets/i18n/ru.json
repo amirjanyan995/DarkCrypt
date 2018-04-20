@@ -1,0 +1,9 @@
+{
+  "home": "Home",
+  "encode_text": "Encode text",
+  "decode_text": "Decode text",
+  "encode": "Encode",
+  "decode": "Decode",
+  "language": "Language",
+  "exit": "Exit"
+}

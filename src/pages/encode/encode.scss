@@ -1,0 +1,63 @@
+page-encode {
+  .btn-wrapper {
+    text-align: center;
+    left: 0;
+    bottom: 20px;
+    position: absolute;
+    z-index: 10;
+    display: block;
+    width: 100%;
+  }
+
+  .btn-wrapper button {
+    width: 44%;
+  }
+
+  .img-preview {
+    width: 100%;
+    max-height: 550px;
+  }
+
+  .SwipedTabs-indicatorSegment
+  {
+    -webkit-transition: 0.3s all;
+    -moz-transition:  0.3s all;
+    -o-transition:  0.3s all;
+    transition:  0.3s all;
+    transform-origin: top 0 left 0;
+    height: 1px;
+    position: relative;
+    top: 0px;
+    background-color: black !important;
+  }
+
+  .SwipedTabs-tabs ion-segment-button
+  {
+    border:none !important;
+    color:gray!important;
+    background-color:white!important;
+  }
+
+  .SwipedTabs-tabs ion-segment-button.SwipedTabs-activeTab
+  {
+    color:black !important;
+  }
+
+  .SwipedTabs-tabs
+  {
+    border-bottom: solid 1px #e6e6e6  !important;
+  }
+
+  #myInput {
+    position: absolute;
+    width: 100%;
+    border: 0;
+    border-radius: 0;
+    background: #cccbcb;
+    max-width: 100%;
+    top: 7px;
+    left: 0;
+    padding: 7px;
+    color: black;
+  }
+}

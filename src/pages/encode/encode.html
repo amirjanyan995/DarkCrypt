@@ -1,0 +1,56 @@
+<ion-header>
+    <navbar [navName]="'Encode text'"></navbar>
+</ion-header>
+
+<ion-content padding class="home-page">
+    <ion-segment  class="SwipedTabs-tabs"  >
+        <ion-segment-button *ngFor='let tab of tabs ; let i = index ' value="IngoreMe" (click)="selectTab(i)"
+                            [ngClass]='{ "SwipedTabs-activeTab" : ( this.SwipedTabsSlider  && ( this.SwipedTabsSlider.getActiveIndex() === i || (  tabs.length -1 === i&& this.SwipedTabsSlider.isEnd()))) }' >
+            {{tab}}
+        </ion-segment-button>
+    </ion-segment>
+    <div id='indicator' class="SwipedTabs-indicatorSegment" [ngStyle]="{'width.%': (100/this.tabs.length)}"></div>
+
+    <ion-slides #SwipedTabsSlider  (ionSlideDrag)="animateIndicator($event)"
+                (ionSlideWillChange)="updateIndicatorPosition()"
+                (ionSlideDidChange)="updateIndicatorPosition()"
+                (pan)="updateIndicatorPosition()"
+                [pager]="false"
+                style="height: 93%;">
+        <ion-slide>
+            <div class="col-md-12" *ngIf="photo">
+                <p align="center">
+                    <img class="img-preview" src="{{ photo }}">
+                </p>
+            </div>
+            <div class="btn-wrapper">
+                <button ion-button icon-left color="custom" icon-start (click)="openGallery()">
+                    <ion-icon ios="ios-images" md="md-images"></ion-icon>
+                    Gallery
+                </button>
+
+                <button ion-button icon-left color="custom" icon-end (click)="takePhoto()" >
+                    <ion-icon ios="ios-camera" md="md-camera"></ion-icon>
+                    Camera
+                </button>
+            </div>
+        </ion-slide>
+        <ion-slide>
+            <textarea #myInput id="myInput" rows="22" (keyup)="resize()" [(ngModel)]="message"></textarea>
+            <div class="btn-wrapper">
+                <button ion-button icon-left color="custom" icon-start (click)="past()">
+                    <ion-icon ios="ios-clipboard" md="md-clipboard"></ion-icon>
+                    Past
+                </button>
+
+                <button ion-button icon-left color="custom" icon-end (click)="clearMessage()" >
+                    <ion-icon ios="ios-trash" md="md-trash"></ion-icon>
+                    Clear
+                </button>
+            </div>
+        </ion-slide>
+        <ion-slide>
+            <h1>Review</h1>
+        </ion-slide>
+    </ion-slides>
+</ion-content>

@@ -1,0 +1,16 @@
+page-home {
+  .btn-wrapper {
+    text-align: center;
+    left: 0;
+    bottom: 20px;
+    position: absolute;
+    z-index: 10;
+    display: block;
+    width: 100%;
+  }
+  .btn-wrapper button {
+    width: 75%;
+    height: 50px;
+  }
+}
+
