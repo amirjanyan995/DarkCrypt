@@ -38,6 +38,7 @@
     "cordova-android": "7.1.0",
     "cordova-browser": "5.0.3",
     "cordova-clipboard": "^1.1.1",
+    "cordova-ios": "4.5.4",
     "cordova-plugin-camera": "^4.0.2",
     "cordova-plugin-device": "^2.0.1",
     "cordova-plugin-image-picker": "git+https://github.com/wymsee/cordova-imagePicker.git",
@@ -52,7 +53,10 @@
     "rxjs": "5.5.8",
     "save": "^2.3.2",
     "sw-toolbox": "3.6.0",
-    "zone.js": "0.8.20"
+    "zone.js": "0.8.20",
+    "cordova-plugin-file": "~6.0.1",
+    "cordova-plugin-file-transfer": "~1.7.1",
+    "cordova-plugin-filepath": "~1.0.2"
   },
   "devDependencies": {
     "@ionic/app-scripts": "3.1.8",
@@ -89,7 +93,8 @@
     },
     "platforms": [
       "android",
-      "browser"
+      "browser",
+      "ios"
     ]
   }
 }

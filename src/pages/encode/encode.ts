@@ -68,7 +68,7 @@ export class EncodePage {
                     icon: !this.platform.is('ios') ? 'close' : null,
                     role: 'destructive',
                     handler: () => {
-                        console.log('the user has cancelled the interaction.');
+
                     }
                 }
             ]
@@ -119,10 +119,10 @@ export class EncodePage {
      *  Open camera and take a photo
      */
     takePhoto(sourceType) {
-        if (this.platform.is('android') && sourceType === this.camera.PictureSourceType.PHOTOLIBRARY) {
+        if (sourceType === this.camera.PictureSourceType.PHOTOLIBRARY) {
             this.imagePicker.getPictures({
                 maximumImagesCount: 1,
-                quality: 75
+                quality: 100
             }).then( imagePath => {
                 if(imagePath.length) {
                     imagePath = imagePath[0];
@@ -139,7 +139,7 @@ export class EncodePage {
         } else {
             // Create options for the Camera Dialog
             var options = {
-                quality: 75,
+                quality: 100,
                 sourceType: sourceType,
                 saveToPhotoAlbum: false,
                 correctOrientation: true
@@ -154,8 +154,6 @@ export class EncodePage {
                 }).catch(err => {
                     this.presentToast('Something went wrong.');
                 })
-            }, (err) => {
-                this.presentToast('Error take photo ');
             });
         }
     }
@@ -169,10 +167,7 @@ export class EncodePage {
         return newFileName;
     }
 
-    /**
-     * Check if project gallery directory is not exist
-     * then create
-     */
+    // Check if project gallery directory is not exist then create
     private checkProjectDir(namePath,folderName){
         let self = this;
         let promise = new Promise(function(resolve, reject)  {
@@ -184,7 +179,6 @@ export class EncodePage {
                         resolve("Success");
                     }).catch(err => {
                     reject("Error");
-                    this.presentToast('Something went wrong.');
                 })
             })
         });
@@ -200,7 +194,6 @@ export class EncodePage {
         this.file.copyFile(namePath, currentName, newDirName , newFileName).then(success => {
             this.lastImage = newFileName;
         }).catch(error => {
-            console.log(error)
             this.presentToast('Error copy file');
         });
     }
