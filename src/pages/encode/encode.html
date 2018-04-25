@@ -18,32 +18,25 @@
                 [pager]="false"
                 style="height: 93%;">
         <ion-slide>
-            <div class="col-md-12" *ngIf="photo">
-                <p align="center">
-                    <img class="img-preview" src="{{ photo }}">
-                </p>
+            <div class="col-md-12" *ngIf="lastImage">
+                <img class="img-preview" src="{{pathForImage(lastImage)}}">
             </div>
             <div class="btn-wrapper">
-                <button ion-button icon-left color="custom" icon-start (click)="openGallery()">
+                <button ion-button icon-left color="default" icon-start (click)="presentActionSheet()">
                     <ion-icon ios="ios-images" md="md-images"></ion-icon>
-                    Gallery
-                </button>
-
-                <button ion-button icon-left color="custom" icon-end (click)="takePhoto()" >
-                    <ion-icon ios="ios-camera" md="md-camera"></ion-icon>
-                    Camera
+                    Select picture
                 </button>
             </div>
         </ion-slide>
         <ion-slide>
             <textarea #myInput id="myInput" rows="22" (keyup)="resize()" [(ngModel)]="message"></textarea>
             <div class="btn-wrapper">
-                <button ion-button icon-left color="custom" icon-start (click)="past()">
+                <button ion-button icon-left color="default" icon-start (click)="past()">
                     <ion-icon ios="ios-clipboard" md="md-clipboard"></ion-icon>
                     Past
                 </button>
 
-                <button ion-button icon-left color="custom" icon-end (click)="clearMessage()" >
+                <button ion-button icon-left color="default" icon-end (click)="message = ''" >
                     <ion-icon ios="ios-trash" md="md-trash"></ion-icon>
                     Clear
                 </button>

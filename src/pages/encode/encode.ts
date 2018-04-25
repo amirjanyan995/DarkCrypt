@@ -10,6 +10,8 @@ import { Transfer, TransferObject } from '@ionic-native/transfer';
 import { FilePath } from '@ionic-native/file-path';
 import { Camera, CameraOptions} from "@ionic-native/camera";
 
+declare var cordova: any;
+
 @IonicPage()
 @Component({
     selector: 'page-encode',
@@ -22,7 +24,10 @@ export class EncodePage {
     tabs:any=[];
 
     private photo:any;
+    private lastImage:any;
     private message:string;
+    private folderName = 'DarkCrypt';
+
     constructor(
         public navCtrl: NavController,
         private camera: Camera,
@@ -36,8 +41,39 @@ export class EncodePage {
         private imagePicker: ImagePicker,
         private clipboard: Clipboard,)
     {
-        this.clipboard.copy('Hello world');
         this.tabs=["Photo","Text","Review"];
+    }
+
+    presentActionSheet() {
+
+        const actionsheet = this.actionSheetCtrl.create({
+            title: 'Select picture',
+            buttons: [
+                {
+                    text: 'camera',
+                    icon: !this.platform.is('ios') ? 'camera' : null,
+                    handler: () => {
+                        this.takePhoto(this.camera.PictureSourceType.CAMERA);
+                    }
+                },
+                {
+                    text: !this.platform.is('ios') ? 'gallery' : 'camera roll',
+                    icon: !this.platform.is('ios') ? 'image' : null,
+                    handler: () => {
+                        this.takePhoto(this.camera.PictureSourceType.PHOTOLIBRARY);
+                    }
+                },
+                {
+                    text: 'cancel',
+                    icon: !this.platform.is('ios') ? 'close' : null,
+                    role: 'destructive',
+                    handler: () => {
+                        console.log('the user has cancelled the interaction.');
+                    }
+                }
+            ]
+        });
+        return actionsheet.present();
     }
     // slider
     ionViewDidEnter() {
@@ -80,39 +116,111 @@ export class EncodePage {
     }
 
     /**
-     *  Remove message
-     */
-    clearMessage() {
-        this.message = '';
-    }
-
-    /**
-     *  Open Gallery and choose a photo
-     */
-    openGallery() {
-        this.imagePicker.getPictures({
-                maximumImagesCount: 1,
-                quality: 75
-        }).then( results =>{
-            if(results.length >= 1 ) {
-                this.photo = results[0];
-            }
-        });
-    }
-
-    /**
      *  Open camera and take a photo
      */
-    takePhoto() {
-        const options: CameraOptions = { quality : 75,
-            destinationType : this.camera.DestinationType.DATA_URL,
-            sourceType : this.camera.PictureSourceType.CAMERA,
-            encodingType: this.camera.EncodingType.JPEG,
-            saveToPhotoAlbum: false
-        };
-        this.camera.getPicture(options).then((imageData) => {
-            this.photo = 'data:image/jpeg;base64,' + imageData;
-        }, (err) => {
+    takePhoto(sourceType) {
+        if (this.platform.is('android') && sourceType === this.camera.PictureSourceType.PHOTOLIBRARY) {
+            this.imagePicker.getPictures({
+                maximumImagesCount: 1,
+                quality: 75
+            }).then( imagePath => {
+                if(imagePath.length) {
+                    imagePath = imagePath[0];
+                    let currentName = imagePath.substr(imagePath.lastIndexOf('/') + 1);
+                    let correctPath = imagePath.substr(0, imagePath.lastIndexOf('/') + 1);
+
+                    this.checkProjectDir(cordova.file.externalRootDirectory, this.folderName).then(success => {
+                        this.copyFileToProjectDir(correctPath,currentName, this.folderName, this.createTempFileName());
+                    }).catch(err => {
+                        this.presentToast('Something went wrong.');
+                    })
+                }
+            });
+        } else {
+            // Create options for the Camera Dialog
+            var options = {
+                quality: 75,
+                sourceType: sourceType,
+                saveToPhotoAlbum: false,
+                correctOrientation: true
+            };
+            // Get the data of an image
+            this.camera.getPicture(options).then((imagePath) => {
+                let currentName = imagePath.substr(imagePath.lastIndexOf('/') + 1);
+                let correctPath = imagePath.substr(0, imagePath.lastIndexOf('/') + 1);
+
+                this.checkProjectDir(cordova.file.externalRootDirectory, this.folderName).then(success => {
+                    this.copyFileToProjectDir(correctPath,currentName, this.folderName, this.createTempFileName());
+                }).catch(err => {
+                    this.presentToast('Something went wrong.');
+                })
+            }, (err) => {
+                this.presentToast('Error take photo ');
+            });
+        }
+    }
+
+    // Create a new name for the image
+    private createTempFileName() {
+        var d = new Date(),
+            n = d.getTime(),
+            newFileName =  n + ".jpg";
+
+        return newFileName;
+    }
+
+    /**
+     * Check if project gallery directory is not exist
+     * then create
+     */
+    private checkProjectDir(namePath,folderName){
+        let self = this;
+        let promise = new Promise(function(resolve, reject)  {
+            self.file.checkDir(namePath, folderName).then(exist => {
+                resolve("Success");
+            }).catch(err => {
+                self.file.createDir(namePath, folderName, false)
+                    .then(success => {
+                        resolve("Success");
+                    }).catch(err => {
+                    reject("Error");
+                    this.presentToast('Something went wrong.');
+                })
+            })
+        });
+        return promise;
+    }
+
+    /**
+     * Copy the image to a project gallery folder
+     */
+    private copyFileToProjectDir(namePath, currentName, newPathName, newFileName) {
+        let newDirName = cordova.file.externalRootDirectory + newPathName + '/';
+
+        this.file.copyFile(namePath, currentName, newDirName , newFileName).then(success => {
+            this.lastImage = newFileName;
+        }).catch(error => {
+            console.log(error)
+            this.presentToast('Error copy file');
         });
     }
+
+    private presentToast(text) {
+        let toast = this.toastCtrl.create({
+            message: text,
+            duration: 3000,
+            position: 'top'
+        });
+        toast.present();
+    }
+
+    // Always get the accurate path to your apps folder
+    public pathForImage(img) {
+        if (img === null) {
+            return '';
+        } else {
+            return cordova.file.externalRootDirectory + this.folderName + '/' + img;
+        }
+    }
+
 }
