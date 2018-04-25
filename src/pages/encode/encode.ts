@@ -1,9 +1,14 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, Slides } from 'ionic-angular';
-import { Camera, CameraOptions} from "@ionic-native/camera";
-import {ImagePicker} from "@ionic-native/image-picker";
+import { IonicPage, NavController, Slides } from 'ionic-angular';
+import { ActionSheetController, ToastController, Platform, LoadingController, Loading } from 'ionic-angular';
+import { ImagePicker } from "@ionic-native/image-picker";
 import { ElementRef } from "@angular/core";
 import { Clipboard } from '@ionic-native/clipboard';
+
+import { File } from '@ionic-native/file';
+import { Transfer, TransferObject } from '@ionic-native/transfer';
+import { FilePath } from '@ionic-native/file-path';
+import { Camera, CameraOptions} from "@ionic-native/camera";
 
 @IonicPage()
 @Component({
@@ -16,20 +21,25 @@ export class EncodePage {
     SwipedTabsIndicator :any= null;
     tabs:any=[];
 
-
     private photo:any;
     private message:string;
-
     constructor(
         public navCtrl: NavController,
-        public navParams: NavParams,
-        private camera:Camera,
+        private camera: Camera,
+        private transfer: Transfer,
+        private file: File,
+        private filePath: FilePath,
+        public actionSheetCtrl: ActionSheetController,
+        public toastCtrl: ToastController,
+        public platform: Platform,
+        public loadingCtrl: LoadingController,
         private imagePicker: ImagePicker,
-        private clipboard: Clipboard)
+        private clipboard: Clipboard,)
     {
         this.clipboard.copy('Hello world');
         this.tabs=["Photo","Text","Review"];
     }
+    // slider
     ionViewDidEnter() {
         this.SwipedTabsIndicator = document.getElementById("indicator");
     }
@@ -45,21 +55,21 @@ export class EncodePage {
         {
             this.SwipedTabsIndicator.style.webkitTransform = 'translate3d('+(this.SwipedTabsSlider.getActiveIndex() * 100)+'%,0,0)';
         }
-
     }
 
     animateIndicator($event) {
         if(this.SwipedTabsIndicator)
             this.SwipedTabsIndicator.style.webkitTransform = 'translate3d(' + (($event.progress* (this.SwipedTabsSlider.length()-1))*100) + '%,0,0)';
     }
+    // slider - end
 
     /**
-     *  text area resize
+     *  Text area resize
      */
     resize() {
         this.myInput.nativeElement.style.height = this.myInput.nativeElement.scrollHeight + 'px';
-        console.log(this.myInput.nativeElement);
     }
+
     past() {
         this.clipboard.paste().then(
             (resolve: string) => {
@@ -68,12 +78,14 @@ export class EncodePage {
             (reject: string) => {}
         );
     }
+
     /**
-     *  remove message
+     *  Remove message
      */
     clearMessage() {
         this.message = '';
     }
+
     /**
      *  Open Gallery and choose a photo
      */
