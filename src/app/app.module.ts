@@ -22,6 +22,7 @@ import { Camera } from '@ionic-native/camera';
  *  Custom Components
  */
 import { NavbarComponent } from "../components/navbar/navbar";
+import { DatabaseProvider } from '../providers/database/database';
 
 @NgModule({
     declarations: [
@@ -54,7 +55,8 @@ import { NavbarComponent } from "../components/navbar/navbar";
         Clipboard,
         StatusBar,
         SplashScreen,
-        {provide: ErrorHandler, useClass: IonicErrorHandler}
+        {provide: ErrorHandler, useClass: IonicErrorHandler},
+    DatabaseProvider
     ]
 })
 export class AppModule {}

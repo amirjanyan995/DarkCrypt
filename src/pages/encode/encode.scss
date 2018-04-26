@@ -1,21 +1,21 @@
 page-encode {
-  .btn-wrapper {
-    text-align: center;
-    left: 0;
-    bottom: 20px;
-    position: absolute;
-    z-index: 10;
-    display: block;
-    width: 100%;
+  ion-card {
+    margin-bottom: 2em;
   }
-
-  .btn-wrapper button {
-    width: 44%;
+  ion-card-content {
+    background-color: #F4F5F8;
+  }
+  ion-card img {
+    width: auto;
+    height: 44px;
+    display: block;
+    margin: 20px auto;
   }
 
   .img-preview {
-    width: 100%;
-    max-height: 550px;
+    width: 95%;
+    height: auto;
+    max-height: min-content;
   }
 
   .SwipedTabs-indicatorSegment
@@ -48,15 +48,20 @@ page-encode {
     border-bottom: solid 1px #e6e6e6  !important;
   }
 
+  div.swiper-pagination {
+    top:20px;
+    bottom:inherit;
+    background-color: red;
+    height: 150px;
+
+  }
+
   #myInput {
-    position: absolute;
     width: 100%;
     border: 0;
     border-radius: 0;
     background: #cccbcb;
     max-width: 100%;
-    top: 7px;
-    left: 0;
     padding: 7px;
     color: black;
   }

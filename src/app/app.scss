@@ -1,3 +1,17 @@
 .toolbar-background-md {
   background-color: #387ef5;
 }
+
+.fixed-buttom{
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+  text-align:center;
+}
+
+.fixed-top{
+  position: absolute;
+  top: 5px;
+  width: 100%;
+  text-align:center;
+}

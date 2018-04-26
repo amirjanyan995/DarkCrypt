@@ -18,32 +18,88 @@
                 [pager]="false"
                 style="height: 93%;">
         <ion-slide>
-            <div class="col-md-12" *ngIf="lastImage">
-                <img class="img-preview" src="{{pathForImage(lastImage)}}">
+            <div class="fixed-top">
+                <div class="row">
+                    <div class="col">
+                        <ion-card>
+                            <ion-card-content>
+                                <!---->
+                                <img src="{{ pathForCacheImage(lastImage) }}" />
+                            </ion-card-content>
+                            <ion-item>
+                                <button ion-button color="dark" clear item-end>
+                                    <ion-icon name="information-circle"></ion-icon>
+                                </button>
+                            </ion-item>
+                        </ion-card>
+                    </div>
+                </div>
             </div>
-            <div class="btn-wrapper">
-                <button ion-button icon-left color="default" icon-start (click)="presentActionSheet()">
-                    <ion-icon ios="ios-images" md="md-images"></ion-icon>
-                    Select picture
-                </button>
+            <div class="fixed-buttom">
+                <div class="row">
+                    <div class="col">
+                        <button ion-button round icon-left icon-start (click)="takePhoto(camera.PictureSourceType.PHOTOLIBRARY)">
+                            <ion-icon ios="ios-images" md="md-images"></ion-icon>
+                            Gallery
+                        </button>
+                    </div>
+                    <div class="col">
+                        <button ion-button round icon-left icon-end (click)="takePhoto(camera.PictureSourceType.CAMERA)" >
+                            <ion-icon ios="ios-camera" md="md-camera"></ion-icon>
+                            Camera
+                        </button>
+                    </div>
+                </div>
             </div>
-        </ion-slide>
-        <ion-slide>
-            <textarea #myInput id="myInput" rows="22" (keyup)="resize()" [(ngModel)]="message"></textarea>
-            <div class="btn-wrapper">
-                <button ion-button icon-left color="default" icon-start (click)="past()">
-                    <ion-icon ios="ios-clipboard" md="md-clipboard"></ion-icon>
-                    Past
-                </button>
 
-                <button ion-button icon-left color="default" icon-end (click)="message = ''" >
-                    <ion-icon ios="ios-trash" md="md-trash"></ion-icon>
-                    Clear
-                </button>
+        </ion-slide>
+        <ion-slide>
+            <div class="fixed-top">
+                <div class="row">
+                    <div class="col">
+                        <textarea #myInput id="myInput" rows="22" (keyup)="resize()" [(ngModel)]="message"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="fixed-buttom">
+                <div class="row">
+                    <div class="col">
+                        <button ion-button round icon-left icon-start (click)="past()">
+                            <ion-icon ios="ios-clipboard" md="md-clipboard"></ion-icon>
+                            Past
+                        </button>
+                    </div>
+                    <div class="col">
+                        <button ion-button round icon-left icon-end (click)="message = ''" >
+                            <ion-icon ios="ios-trash" md="md-trash"></ion-icon>
+                            Clear
+                        </button>
+                    </div>
+                </div>
             </div>
         </ion-slide>
         <ion-slide>
-            <h1>Review</h1>
+            <div class="fixed-top">
+                <ion-row>
+                    <div class="form-group">
+                        <label for="outputFileName">Output File Name:</label>
+                        <input type="text" class="form-control" [(ngModel)]="outputFileName" id="outputFileName">
+                    </div>
+                    <div class="form-group">
+                        <label for="pwd">Password (optionl):</label>
+                        <input type="text" class="form-control" [(ngModel)]="password" id="pwd">
+                    </div>
+                </ion-row>
+            </div>
+            <div class="fixed-buttom">
+                <div class="row">
+                    <div class="col">
+                        <button ion-button round icon-left (click)="encode()">
+                            Encode
+                        </button>
+                    </div>
+                </div>
+            </div>
         </ion-slide>
     </ion-slides>
 </ion-content>
