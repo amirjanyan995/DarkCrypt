@@ -2,13 +2,15 @@ import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, Slides } from 'ionic-angular';
 import { ActionSheetController, ToastController, Platform, LoadingController } from 'ionic-angular';
 import { ImagePicker } from "@ionic-native/image-picker";
-import { ElementRef } from "@angular/core";
+// import { ElementRef } from "@angular/core";
 import { Clipboard } from '@ionic-native/clipboard';
 
 import { File } from '@ionic-native/file';
 import { Transfer } from '@ionic-native/transfer';
 import { FilePath } from '@ionic-native/file-path';
 import { Camera } from "@ionic-native/camera";
+import { Content } from "ionic-angular";
+import { ElementRef } from "@angular/core";
 
 declare var cordova: any;
 
@@ -19,7 +21,9 @@ declare var cordova: any;
 })
 export class EncodePage {
     @ViewChild('SwipedTabsSlider') SwipedTabsSlider: Slides ;
+    @ViewChild( Content ) content: Content;
     @ViewChild('myInput') myInput: ElementRef;
+
     SwipedTabsIndicator :any= null;
     tabs:any=[];
 
@@ -42,6 +46,15 @@ export class EncodePage {
         private clipboard: Clipboard,)
     {
         this.tabs=["Photo","Text","Review"];
+    }
+
+    show1(){
+        console.log(this.myInput);
+        console.log(this.content);
+    }
+
+    resize() {
+        this.myInput.nativeElement.style.height = (this.content.contentHeight - (this.content.contentHeight * 0.2178)) + 'px';
     }
 
     presentActionSheet() {
@@ -99,9 +112,9 @@ export class EncodePage {
     }
 
     // Text Area resize
-    public resize() {
-        this.myInput.nativeElement.style.height = this.myInput.nativeElement.scrollHeight + 'px';
-    }
+    // public resize() {
+    //     this.myInput.nativeElement.style.height = this.myInput.nativeElement.scrollHeight + 'px';
+    // }
 
     // Past copyed text
     public past() {
@@ -125,9 +138,6 @@ export class EncodePage {
                     imagePath = imagePath[0];
                     let currentName = imagePath.substr(imagePath.lastIndexOf('/') + 1);
                     let correctPath = imagePath.substr(0, imagePath.lastIndexOf('/') + 1);
-                    console.log(imagePath);
-                    console.log(currentName);
-                    console.log(correctPath);
                     this.copyFileToDir(correctPath,currentName, cordova.file.dataDirectory , this.createTempFileName());
 
                     /*this.checkAndCreateDir(cordova.file.externalRootDirectory, this.folderName).then(success => {
@@ -150,9 +160,6 @@ export class EncodePage {
             this.camera.getPicture(options).then((imagePath) => {
                 let currentName = imagePath.substr(imagePath.lastIndexOf('/') + 1);
                 let correctPath = imagePath.substr(0, imagePath.lastIndexOf('/') + 1);
-                console.log(imagePath);
-                console.log(currentName);
-                console.log(correctPath);
                 this.copyFileToDir(correctPath,currentName, cordova.file.dataDirectory , this.createTempFileName());
 
                 /*this.checkAndCreateDir(cordova.file.externalRootDirectory, this.folderName).then(success => {
@@ -186,9 +193,8 @@ export class EncodePage {
     // Copy the image to a project gallery folder
     private copyFileToDir(namePath, currentName, newPathName, newFileName) {
         this.file.copyFile(namePath, currentName, newPathName , newFileName).then(success => {
-
-            console.log(success)
             this.lastImage = newFileName;
+            return true;
         }).catch(err => {
             console.log(err)
             this.presentToast('Error copy file');
@@ -223,7 +229,17 @@ export class EncodePage {
         return img === null ? 'assets/imgs/misc/img-icon.png' : this.file.dataDirectory + '/' + img;
     }
 
+    /**
+     *  Encode
+     */
     public encode() {
-
+        this.checkAndCreateDir(cordova.file.externalRootDirectory, this.folderName).then(success => {
+            let newDirName = cordova.file.externalRootDirectory + this.folderName + '/';
+            if( this.copyFileToDir(this.file.dataDirectory,this.lastImage, newDirName , this.outputFileName + '.jpg')) {
+                this.presentToast('Encoding successfully done.');
+            }
+        }).catch(err => {
+            this.presentToast('Something went wrong.');
+        })
     }
 }

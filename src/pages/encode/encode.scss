@@ -2,9 +2,11 @@ page-encode {
   ion-card {
     margin-bottom: 2em;
   }
+
   ion-card-content {
     background-color: #F4F5F8;
   }
+
   ion-card img {
     width: auto;
     height: 44px;
@@ -57,11 +59,11 @@ page-encode {
   }
 
   #myInput {
-    width: 100%;
+    resize: none;
+    width: calc(100% - 10px);
     border: 0;
     border-radius: 0;
     background: #cccbcb;
-    max-width: 100%;
     padding: 7px;
     color: black;
   }

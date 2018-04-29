@@ -11,7 +11,8 @@
     </ion-segment>
     <div id='indicator' class="SwipedTabs-indicatorSegment" [ngStyle]="{'width.%': (100/this.tabs.length)}"></div>
 
-    <ion-slides #SwipedTabsSlider  (ionSlideDrag)="animateIndicator($event)"
+    <ion-slides #SwipedTabsSlider
+                (ionSlideDrag)="animateIndicator($event)"
                 (ionSlideWillChange)="updateIndicatorPosition()"
                 (ionSlideDidChange)="updateIndicatorPosition()"
                 (pan)="updateIndicatorPosition()"
@@ -23,11 +24,13 @@
                     <div class="col">
                         <ion-card>
                             <ion-card-content>
-                                <!---->
                                 <img src="{{ pathForCacheImage(lastImage) }}" />
                             </ion-card-content>
                             <ion-item>
-                                <button ion-button color="dark" clear item-end>
+                                <button ion-button color="dark" clear item-start *ngIf="lastImage" (click)="lastImage = null">
+                                    <ion-icon name="trash"></ion-icon>
+                                </button>
+                                <button ion-button color="dark" clear item-end *ngIf="lastImage">
                                     <ion-icon name="information-circle"></ion-icon>
                                 </button>
                             </ion-item>
@@ -38,26 +41,25 @@
             <div class="fixed-buttom">
                 <div class="row">
                     <div class="col">
-                        <button ion-button round icon-left icon-start (click)="takePhoto(camera.PictureSourceType.PHOTOLIBRARY)">
+                        <button ion-button round icon-left icon-start (click)="takePhoto(camera.PictureSourceType.PHOTOLIBRARY)" *ngIf="!lastImage">
                             <ion-icon ios="ios-images" md="md-images"></ion-icon>
                             Gallery
                         </button>
                     </div>
                     <div class="col">
-                        <button ion-button round icon-left icon-end (click)="takePhoto(camera.PictureSourceType.CAMERA)" >
+                        <button ion-button round icon-left icon-end (click)="takePhoto(camera.PictureSourceType.CAMERA)" *ngIf="!lastImage">
                             <ion-icon ios="ios-camera" md="md-camera"></ion-icon>
                             Camera
                         </button>
                     </div>
                 </div>
             </div>
-
         </ion-slide>
         <ion-slide>
             <div class="fixed-top">
                 <div class="row">
                     <div class="col">
-                        <textarea #myInput id="myInput" rows="22" (keyup)="resize()" [(ngModel)]="message"></textarea>
+                        <textarea #myInput id="myInput" rows="1" maxLength="500" (keyup)="resize()" [(ngModel)]="message"></textarea>
                     </div>
                 </div>
             </div>
@@ -85,8 +87,10 @@
                         <label for="outputFileName">Output File Name:</label>
                         <input type="text" class="form-control" [(ngModel)]="outputFileName" id="outputFileName">
                     </div>
+                </ion-row>
+                <ion-row>
                     <div class="form-group">
-                        <label for="pwd">Password (optionl):</label>
+                        <label for="pwd">Password:</label>
                         <input type="text" class="form-control" [(ngModel)]="password" id="pwd">
                     </div>
                 </ion-row>
@@ -94,7 +98,7 @@
             <div class="fixed-buttom">
                 <div class="row">
                     <div class="col">
-                        <button ion-button round icon-left (click)="encode()">
+                        <button ion-button round icon-left (click)="encode()" [disabled]="!lastImage">
                             Encode
                         </button>
                     </div>
