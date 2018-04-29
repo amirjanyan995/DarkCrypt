@@ -23,6 +23,7 @@ import { Camera } from '@ionic-native/camera';
  */
 import { NavbarComponent } from "../components/navbar/navbar";
 import { DatabaseProvider } from '../providers/database/database';
+import { IonicStorageModule } from '@ionic/storage';
 
 @NgModule({
     declarations: [
@@ -35,7 +36,8 @@ import { DatabaseProvider } from '../providers/database/database';
     ],
     imports: [
         BrowserModule,
-        IonicModule.forRoot(MyApp)
+        IonicModule.forRoot(MyApp),
+        IonicStorageModule.forRoot()
     ],
     bootstrap: [IonicApp],
     entryComponents: [

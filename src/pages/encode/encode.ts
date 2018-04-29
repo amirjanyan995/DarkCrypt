@@ -2,7 +2,6 @@ import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, Slides } from 'ionic-angular';
 import { ActionSheetController, ToastController, Platform, LoadingController } from 'ionic-angular';
 import { ImagePicker } from "@ionic-native/image-picker";
-// import { ElementRef } from "@angular/core";
 import { Clipboard } from '@ionic-native/clipboard';
 
 import { File } from '@ionic-native/file';
@@ -11,6 +10,7 @@ import { FilePath } from '@ionic-native/file-path';
 import { Camera } from "@ionic-native/camera";
 import { Content } from "ionic-angular";
 import { ElementRef } from "@angular/core";
+import { Storage } from "@ionic/storage";
 
 declare var cordova: any;
 
@@ -43,14 +43,10 @@ export class EncodePage {
         public toastCtrl: ToastController,
         public platform: Platform,
         private imagePicker: ImagePicker,
-        private clipboard: Clipboard,)
+        private clipboard: Clipboard,
+        private storage: Storage)
     {
         this.tabs=["Photo","Text","Review"];
-    }
-
-    show1(){
-        console.log(this.myInput);
-        console.log(this.content);
     }
 
     resize() {
@@ -128,7 +124,6 @@ export class EncodePage {
 
     // Take new photo from camera or gallery
     private takePhoto(sourceType) {
-        console.log(cordova.file)
         if (sourceType === this.camera.PictureSourceType.PHOTOLIBRARY) {
             this.imagePicker.getPictures({
                 maximumImagesCount: 1,
@@ -196,7 +191,6 @@ export class EncodePage {
             this.lastImage = newFileName;
             return true;
         }).catch(err => {
-            console.log(err)
             this.presentToast('Error copy file');
         });
     }
