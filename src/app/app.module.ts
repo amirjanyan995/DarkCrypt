@@ -6,7 +6,7 @@ import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { EncodePage} from "../pages/encode/encode";
 import { DecodePage} from "../pages/decode/decode";
-import { LanguagePage} from "../pages/language/language";
+import { SettingsPage } from "../pages/settings/settings";
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { ImagePicker } from '@ionic-native/image-picker';
@@ -30,7 +30,7 @@ import { DatabaseProvider } from '../providers/database/database';
         HomePage,
         EncodePage,
         DecodePage,
-        LanguagePage,
+        SettingsPage,
         NavbarComponent
     ],
     imports: [
@@ -43,7 +43,7 @@ import { DatabaseProvider } from '../providers/database/database';
         HomePage,
         EncodePage,
         DecodePage,
-        LanguagePage,
+        SettingsPage,
         NavbarComponent
     ],
     providers: [

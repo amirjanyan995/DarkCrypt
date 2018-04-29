@@ -6,7 +6,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { HomePage} from "../pages/home/home";
 import { EncodePage} from "../pages/encode/encode";
 import { DecodePage} from "../pages/decode/decode";
-import { LanguagePage} from "../pages/language/language";
+import { SettingsPage } from "../pages/settings/settings";
 
 @Component({
     templateUrl: 'app.html'
@@ -27,7 +27,7 @@ export class MyApp {
             { title: 'Home', component: HomePage, icon: 'ios-home' },
             { title: 'Encode text', component: EncodePage, icon: 'md-key' },
             { title: 'Decode text', component: DecodePage, icon: 'md-unlock' },
-            { title: 'Language', component: LanguagePage, icon: 'md-globe' }
+            { title: 'Settings', component: SettingsPage, icon: 'md-settings' }
         ];
     }
 
