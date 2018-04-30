@@ -43,7 +43,6 @@ export class MyApp {
         this.translate.setDefaultLang('en');
 
         this.storage.get('language').then((language) => {
-            console.log(language != null ? language : 'en');
             this.translate.use(language != null ? language : 'en'); // Set your language here
         });
     }
