@@ -1,16 +1,16 @@
 <ion-header>
-    <navbar [navName]="'Home'"></navbar>
+    <navbar [navName]="'home' | translate"></navbar>
 </ion-header>
 
 <ion-content padding>
     <div class="btn-wrapper">
         <button ion-button round icon-left (click)="openPage(encodePage)">
             <ion-icon ios="ios-key" md="md-key"></ion-icon>
-            &nbsp;Encode text
+            <span translate>encode_text</span>
         </button>
         <button ion-button round icon-left (click)="openPage(decodePage)" >
             <ion-icon ios="ios-unlock" md="md-unlock"></ion-icon>
-            &nbsp;Decode text
+            <span translate>decode_text</span>
         </button>
     </div>
 </ion-content>

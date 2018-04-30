@@ -2,8 +2,20 @@
   "home": "Home",
   "encode_text": "Encode text",
   "decode_text": "Decode text",
+  "settings": "Settings",
+  "settings_list": "Settings List",
+  "exit": "Exit",
   "encode": "Encode",
   "decode": "Decode",
-  "language": "Language",
-  "exit": "Exit"
+  "language": "Language։",
+  "output_name": "Output file name։",
+  "output_extension": "Output file extension։",
+  "gallery": "Gallery",
+  "camera": "Camera",
+  "password": "Password:",
+  "clear": "Clear",
+  "past": "Past",
+  "photo": "Photo",
+  "text": "Text",
+  "review": "Review"
 }

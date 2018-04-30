@@ -3,11 +3,11 @@
         <ion-list>
             <button menuClose ion-item *ngFor="let page of pages" (click)="openPage(page)">
                 <ion-icon name="{{page.icon}}"></ion-icon>
-                {{page.title}}
+                {{page.title | translate}}
             </button>
             <button menuClose ion-item (click)="exitApp()">
                 <ion-icon name="md-exit"></ion-icon>
-                Exit
+                <span translate>exit</span>
             </button>
         </ion-list>
     </ion-content>

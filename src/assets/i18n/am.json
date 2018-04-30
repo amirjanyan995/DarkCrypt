@@ -2,8 +2,20 @@
   "home": "Գլխավոր",
   "encode_text": "Ծածկագրել",
   "decode_text": "Վերծանել",
+  "settings": "Կարգավորումներ",
+  "settings_list": "Կարգավորումների ցանկ",
+  "exit": "Ելք",
   "encode": "Ծածկագրել",
   "decode": "Վերծանել",
-  "language": "Լեզուներ",
-  "exit": "Ելք"
+  "language": "Լեզուներ։",
+  "output_name": "Ելքային ֆայլի անվանումը։",
+  "output_extension": "Ելքային ֆայլի ձևաչաձը։",
+  "gallery": "Պատկերասրահ",
+  "camera": "Տեսախցիկ",
+  "password": "Գազտնաբառ:",
+  "clear": "Մաքրել",
+  "past": "Տեղադրել",
+  "photo": "Նկար",
+  "text": "Տեքստ",
+  "review": "Review"
 }

@@ -1,12 +1,12 @@
 <ion-header>
-    <navbar [navName]="'Encode text'"></navbar>
+    <navbar [navName]="'encode_text' | translate"></navbar>
 </ion-header>
 
 <ion-content padding class="home-page">
     <ion-segment  class="SwipedTabs-tabs"  >
         <ion-segment-button *ngFor='let tab of tabs ; let i = index ' value="IngoreMe" (click)="selectTab(i)"
                             [ngClass]='{ "SwipedTabs-activeTab" : ( this.SwipedTabsSlider  && ( this.SwipedTabsSlider.getActiveIndex() === i || (  tabs.length -1 === i&& this.SwipedTabsSlider.isEnd()))) }' >
-            {{tab}}
+            {{tab | translate}}
         </ion-segment-button>
     </ion-segment>
     <div id='indicator' class="SwipedTabs-indicatorSegment" [ngStyle]="{'width.%': (100/this.tabs.length)}"></div>
@@ -43,13 +43,13 @@
                     <div class="col">
                         <button ion-button round icon-left icon-start (click)="takePhoto(camera.PictureSourceType.PHOTOLIBRARY)" *ngIf="!lastImage">
                             <ion-icon ios="ios-images" md="md-images"></ion-icon>
-                            Gallery
+                            <span translate>gallery</span>
                         </button>
                     </div>
                     <div class="col">
                         <button ion-button round icon-left icon-end (click)="takePhoto(camera.PictureSourceType.CAMERA)" *ngIf="!lastImage">
                             <ion-icon ios="ios-camera" md="md-camera"></ion-icon>
-                            Camera
+                            <span translate>camera</span>
                         </button>
                     </div>
                 </div>
@@ -68,13 +68,13 @@
                     <div class="col">
                         <button ion-button round icon-left icon-start (click)="past()">
                             <ion-icon ios="ios-clipboard" md="md-clipboard"></ion-icon>
-                            Past
+                            <span translate>past</span>
                         </button>
                     </div>
                     <div class="col">
                         <button ion-button round icon-left icon-end (click)="message = ''" >
                             <ion-icon ios="ios-trash" md="md-trash"></ion-icon>
-                            Clear
+                            <span translate>clear</span>
                         </button>
                     </div>
                 </div>
@@ -84,13 +84,13 @@
             <div class="fixed-top">
                 <ion-row>
                     <div class="form-group">
-                        <label for="outputFileName">Output File Name:</label>
+                        <label for="outputFileName" translate>output_name</label>
                         <input type="text" class="form-control" [(ngModel)]="outputFileName" id="outputFileName">
                     </div>
                 </ion-row>
                 <ion-row>
                     <div class="form-group">
-                        <label for="pwd">Password:</label>
+                        <label for="pwd" translate>password</label>
                         <input type="text" class="form-control" [(ngModel)]="password" id="pwd">
                     </div>
                 </ion-row>
@@ -99,7 +99,7 @@
                 <div class="row">
                     <div class="col">
                         <button ion-button round icon-left (click)="encode()" [disabled]="!lastImage">
-                            Encode
+                            <span translate>encode</span>
                         </button>
                     </div>
                 </div>

@@ -3,7 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { List } from "ionic-angular";
 
 import { Storage } from '@ionic/storage';
-
+import { TranslateService } from "@ngx-translate/core";
 /**
  * Generated class for the SettingsPage page.
  *
@@ -26,13 +26,13 @@ export class SettingsPage {
     // Project languages
     public languages:any = [
         {
-            value: 'english',
+            value: 'en',
             name:'English'
         },{
-            value:'russian',
+            value:'ru',
             name:'Русский'
         },{
-            value:'armenian',
+            value:'am',
             name:'Հայերեն'
         }];
 
@@ -46,15 +46,29 @@ export class SettingsPage {
             name: 'PNG'
         }];
 
-    constructor(private storage: Storage) {
+    constructor(
+        private translate: TranslateService,
+        private storage: Storage)
+    {
         // set language
         this.storage.get('language').then((language) => {
-            this.language = ( language == null ) ? 'english' : language;
+            if( language == null ) {
+                this.storage.set('language', 'en');
+                this.language = 'en'
+            } else {
+                this.language = language
+            }
+            this.translate.use(this.language);
         });
 
         // set output file extension
         this.storage.get('extension').then((extension) => {
-            this.extension = ( extension == null ) ? 'jpg' : extension;
+            if ( extension == null ) {
+                this.storage.set('extension', 'jpg');
+                this.extension =  'jpg'
+            } else {
+                this.extension = extension
+            }
         });
     }
 
@@ -63,6 +77,8 @@ export class SettingsPage {
      */
     selectLanguage(){
         this.storage.set('language', this.language);
+        this.translate.use(this.language);
+
     }
 
     /**

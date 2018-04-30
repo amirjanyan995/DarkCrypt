@@ -1,9 +1,21 @@
 {
-  "home": "Home",
-  "encode_text": "Encode text",
-  "decode_text": "Decode text",
+  "home": "Главная",
+  "encode_text": "Кодировать текст",
+  "decode_text": "Декодировать текст",
+  "settings": "Настройки",
+  "settings_list": "Настройки списка",
+  "exit": "Выход",
   "encode": "Encode",
   "decode": "Decode",
-  "language": "Language",
-  "exit": "Exit"
+  "language": "Язык։",
+  "output_name": "Название выходного файла։",
+  "output_extension": "Расширение выходного файла։",
+  "gallery": "Галерея",
+  "camera": "Камера",
+  "password": "Пароль:",
+  "clear": "Очистить",
+  "past": "Вставить",
+  "photo": "Фото",
+  "text": "Текст",
+  "review": "Обзор"
 }

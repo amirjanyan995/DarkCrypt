@@ -46,44 +46,13 @@ export class EncodePage {
         private clipboard: Clipboard,
         private storage: Storage)
     {
-        this.tabs=["Photo","Text","Review"];
+        this.tabs=["photo","text","review"];
     }
 
     resize() {
         this.myInput.nativeElement.style.height = (this.content.contentHeight - (this.content.contentHeight * 0.2178)) + 'px';
     }
 
-    presentActionSheet() {
-
-        const actionsheet = this.actionSheetCtrl.create({
-            title: 'Select picture',
-            buttons: [
-                {
-                    text: 'camera',
-                    icon: !this.platform.is('ios') ? 'camera' : null,
-                    handler: () => {
-                        this.takePhoto(this.camera.PictureSourceType.CAMERA);
-                    }
-                },
-                {
-                    text: !this.platform.is('ios') ? 'gallery' : 'camera roll',
-                    icon: !this.platform.is('ios') ? 'image' : null,
-                    handler: () => {
-                        this.takePhoto(this.camera.PictureSourceType.PHOTOLIBRARY);
-                    }
-                },
-                {
-                    text: 'cancel',
-                    icon: !this.platform.is('ios') ? 'close' : null,
-                    role: 'destructive',
-                    handler: () => {
-
-                    }
-                }
-            ]
-        });
-        return actionsheet.present();
-    }
     // slider
     ionViewDidEnter() {
         this.SwipedTabsIndicator = document.getElementById("indicator");

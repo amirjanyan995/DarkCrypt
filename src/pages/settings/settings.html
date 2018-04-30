@@ -1,20 +1,24 @@
 <ion-header>
-    <navbar [navName]="'Settings List'"></navbar>
+    <navbar [navName]="'settings_list' | translate"></navbar>
 </ion-header>
 
 <ion-content>
     <ion-list>
         <ion-list-header>
-            Settings
+            <p translate>settings</p>
         </ion-list-header>
         <ion-item>
-            <ion-label>Language:</ion-label>
+            <ion-label>
+                <span translate>language</span>
+            </ion-label>
             <ion-select [(ngModel)]="language" (ionChange)="selectLanguage()">
                 <ion-option *ngFor="let language of languages" value="{{ language.value }}">{{ language.name }}</ion-option>
             </ion-select>
         </ion-item>
         <ion-item>
-            <ion-label>Output file extension:</ion-label>
+            <ion-label>
+                <span translate>output_extension</span>
+            </ion-label>
             <ion-select [(ngModel)]="extension" (ionChange)="selectExtension()">
                 <ion-option *ngFor="let extension of extensions" value="{{ extension.value }}">{{ extension.name }}</ion-option>
             </ion-select>
