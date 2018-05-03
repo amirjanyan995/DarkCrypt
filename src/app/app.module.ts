@@ -4,41 +4,63 @@ import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 
 import { HomePage } from '../pages/home/home';
-import { EncodePage} from "../pages/encode/encode";
-import { DecodePage} from "../pages/decode/decode";
 import { SettingsPage } from "../pages/settings/settings";
 
+// encode page
+import { EncodePage} from "../pages/encode/encode";
+import { EncodePhotoPage } from "../pages/encode/encode-photo/encode-photo";
+import { EncodeTextPage } from "../pages/encode/encode-text/encode-text";
+import { EncodeReviewPage } from "../pages/encode/encode-review/encode-review";
+
+// page decode
+import { DecodePage} from "../pages/decode/decode";
+import { DecodePhotoPage } from "../pages/decode/decode-photo/decode-photo";
+import { DecodeTextPage } from "../pages/decode/decode-text/decode-text";
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { ImagePicker } from '@ionic-native/image-picker';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Clipboard } from "@ionic-native/clipboard";
 
-
 import { File } from '@ionic-native/file';
 import { Transfer } from '@ionic-native/transfer';
 import { FilePath } from '@ionic-native/file-path';
 import { Camera } from '@ionic-native/camera';
+import { PhotoViewer } from '@ionic-native/photo-viewer';
 
 import { HttpClient, HttpClientModule } from "@angular/common/http";
 import { TranslateLoader, TranslateModule } from "@ngx-translate/core";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 
+import { SuperTabsModule } from 'ionic2-super-tabs';
 /**
  *  Custom Components
  */
 import { NavbarComponent } from "../components/navbar/navbar";
-import { DatabaseProvider } from '../providers/database/database';
 import { IonicStorageModule } from "@ionic/storage";
+/**
+ * Providers
+ */
+import { EncodeProvider } from '../providers/encode/encode';
+import { DatabaseProvider } from '../providers/database/database';
 
 @NgModule({
     declarations: [
+        NavbarComponent,
         MyApp,
         HomePage,
-        EncodePage,
-        DecodePage,
         SettingsPage,
-        NavbarComponent
+
+        // Encode Page
+        EncodePage,
+        EncodePhotoPage,
+        EncodeTextPage,
+        EncodeReviewPage,
+
+        // Decode Page
+        DecodePage,
+        DecodePhotoPage,
+        DecodeTextPage
     ],
     imports: [
         BrowserModule,
@@ -51,19 +73,30 @@ import { IonicStorageModule } from "@ionic/storage";
             }
         }),
         IonicModule.forRoot(MyApp),
-        IonicStorageModule.forRoot()
+        IonicStorageModule.forRoot(),
+        SuperTabsModule.forRoot()
     ],
     bootstrap: [IonicApp],
     entryComponents: [
+        NavbarComponent,
         MyApp,
         HomePage,
-        EncodePage,
-        DecodePage,
         SettingsPage,
-        NavbarComponent
+
+        // Encode Page
+        EncodePage,
+        EncodePhotoPage,
+        EncodeTextPage,
+        EncodeReviewPage,
+
+        // Decode Page
+        DecodePage,
+        DecodePhotoPage,
+        DecodeTextPage
     ],
     providers: [
         Camera,
+        PhotoViewer,
         File,
         FilePath,
         Transfer,
@@ -72,7 +105,8 @@ import { IonicStorageModule } from "@ionic/storage";
         StatusBar,
         SplashScreen,
         {provide: ErrorHandler, useClass: IonicErrorHandler},
-    DatabaseProvider
+        DatabaseProvider,
+        EncodeProvider
     ]
 })
 

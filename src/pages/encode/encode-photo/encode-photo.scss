@@ -1,0 +1,15 @@
+page-encode-photo {
+  ion-card-content {
+    background-color: #F4F5F8;
+  }
+
+  ion-card-content .card-content-md {
+    padding: 1px 1px !important;
+  }
+
+  ion-card img {
+    width: auto;
+    max-height: 71vh;
+    display: block;
+  }
+}

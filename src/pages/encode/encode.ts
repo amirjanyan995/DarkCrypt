@@ -1,8 +1,17 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, Slides } from 'ionic-angular';
+import { IonicPage, NavController } from 'ionic-angular';
 import { ActionSheetController, ToastController, Platform, LoadingController } from 'ionic-angular';
 import { ImagePicker } from "@ionic-native/image-picker";
 import { Clipboard } from '@ionic-native/clipboard';
+
+// inner pages
+import { EncodePhotoPage } from "./encode-photo/encode-photo";
+import { EncodeTextPage } from "./encode-text/encode-text";
+import { EncodeReviewPage } from "./encode-review/encode-review";
+
+import { SuperTabsController } from "ionic2-super-tabs";
+
+import { EncodeProvider } from "../../providers/encode/encode";
 
 import { File } from '@ionic-native/file';
 import { Transfer } from '@ionic-native/transfer';
@@ -20,21 +29,22 @@ declare var cordova: any;
     templateUrl: 'encode.html',
 })
 export class EncodePage {
-    @ViewChild('SwipedTabsSlider') SwipedTabsSlider: Slides ;
     @ViewChild( Content ) content: Content;
     @ViewChild('myInput') myInput: ElementRef;
 
-    SwipedTabsIndicator :any= null;
-    tabs:any=[];
+    public encodePhoto:any = EncodePhotoPage;
+    public encodeText:any = EncodeTextPage;
+    public encodeReview:any = EncodeReviewPage;
 
     private lastImage:any = null;
     private message:string;
-    private folderName = 'DarkCrypt';
     private outputFileName: string;
     private password: string;
 
     constructor(
         public navCtrl: NavController,
+        private superTabsCtrl: SuperTabsController,
+        public encode: EncodeProvider,
         private camera: Camera,
         private transfer: Transfer,
         private file: File,
@@ -44,42 +54,18 @@ export class EncodePage {
         public platform: Platform,
         private imagePicker: ImagePicker,
         private clipboard: Clipboard,
-        private storage: Storage)
+        private storage: Storage,)
     {
-        this.tabs=["photo","text","review"];
+        console.log(this.encode.pathForCacheImage(this.lastImage));
+    }
+
+    onTabSelect(ev: any) {
+        console.log('Tab selected', 'Index: ' + ev.index, 'Unique ID: ' + ev.id);
     }
 
     resize() {
         this.myInput.nativeElement.style.height = (this.content.contentHeight - (this.content.contentHeight * 0.2178)) + 'px';
     }
-
-    // slider
-    ionViewDidEnter() {
-        this.SwipedTabsIndicator = document.getElementById("indicator");
-    }
-
-    selectTab(index) {
-        this.SwipedTabsIndicator.style.webkitTransform = 'translate3d('+(100*index)+'%,0,0)';
-        this.SwipedTabsSlider.slideTo(index, 500);
-    }
-
-    updateIndicatorPosition() {
-        // this condition is to avoid passing to incorrect index
-        if( this.SwipedTabsSlider.length()> this.SwipedTabsSlider.getActiveIndex())
-        {
-            this.SwipedTabsIndicator.style.webkitTransform = 'translate3d('+(this.SwipedTabsSlider.getActiveIndex() * 100)+'%,0,0)';
-        }
-    }
-
-    animateIndicator($event) {
-        if(this.SwipedTabsIndicator)
-            this.SwipedTabsIndicator.style.webkitTransform = 'translate3d(' + (($event.progress* (this.SwipedTabsSlider.length()-1))*100) + '%,0,0)';
-    }
-
-    // Text Area resize
-    // public resize() {
-    //     this.myInput.nativeElement.style.height = this.myInput.nativeElement.scrollHeight + 'px';
-    // }
 
     // Past copyed text
     public past() {
@@ -183,26 +169,27 @@ export class EncodePage {
         toast.present();
     }
 
-    // Always get the accurate path to your project created folder
-    public pathForProjectImage(img) {
-        return img === null ? 'assets/imgs/misc/img-icon.png' : this.file.externalRootDirectory + this.folderName + '/' + img;
-    }
-    // Always get the accurate path to your apps folder
-    public pathForCacheImage(img) {
-        return img === null ? 'assets/imgs/misc/img-icon.png' : this.file.dataDirectory + '/' + img;
-    }
+    // // Always get the accurate path to your project created folder
+    // public pathForProjectImage(img) {
+    //     return img === null ? 'assets/imgs/misc/img-icon.png' : this.file.externalRootDirectory + this.folderName + '/' + img;
+    // }
+    //
+    // // Always get the accurate path to your apps folder
+    // public pathForCacheImage(img) {
+    //     return img === null ? 'assets/imgs/misc/img-icon.png' : this.file.dataDirectory + '/' + img;
+    // }
 
-    /**
-     *  Encode
-     */
-    public encode() {
-        this.checkAndCreateDir(cordova.file.externalRootDirectory, this.folderName).then(success => {
-            let newDirName = cordova.file.externalRootDirectory + this.folderName + '/';
-            if( this.copyFileToDir(this.file.dataDirectory,this.lastImage, newDirName , this.outputFileName + '.jpg')) {
-                this.presentToast('Encoding successfully done.');
-            }
-        }).catch(err => {
-            this.presentToast('Something went wrong.');
-        })
-    }
+    // /**
+    //  *  Encode
+    //  */
+    // public encode() {
+    //     this.checkAndCreateDir(cordova.file.externalRootDirectory, this.folderName).then(success => {
+    //         let newDirName = cordova.file.externalRootDirectory + this.folderName + '/';
+    //         if( this.copyFileToDir(this.file.dataDirectory,this.lastImage, newDirName , this.outputFileName + '.jpg')) {
+    //             this.presentToast('Encoding successfully done.');
+    //         }
+    //     }).catch(err => {
+    //         this.presentToast('Something went wrong.');
+    //     })
+    // }
 }

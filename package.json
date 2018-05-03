@@ -27,6 +27,7 @@
     "@ionic-native/file": "^4.7.0",
     "@ionic-native/file-path": "^4.7.0",
     "@ionic-native/image-picker": "^4.7.0",
+    "@ionic-native/photo-viewer": "^4.7.0",
     "@ionic-native/splash-screen": "4.6.0",
     "@ionic-native/sqlite": "^4.7.0",
     "@ionic-native/status-bar": "4.6.0",
@@ -35,6 +36,7 @@
     "@ngx-translate/core": "^9.1.1",
     "@ngx-translate/http-loader": "^3.0.1",
     "body-parser": "^1.17.2",
+    "com-sarriaroman-photoviewer": "^1.1.16",
     "com.synconset.imagepicker": "~2.1.10",
     "cordova-android": "7.1.0",
     "cordova-browser": "5.0.3",
@@ -53,6 +55,7 @@
     "cordova-plugin-whitelist": "^1.3.3",
     "express": "^4.15.4",
     "ionic-angular": "3.9.2",
+    "ionic2-super-tabs": "^4.2.2",
     "ionicons": "3.0.0",
     "rxjs": "5.5.8",
     "save": "^2.3.2",
@@ -92,7 +95,8 @@
       "cordova-plugin-file": {},
       "cordova-plugin-file-transfer": {},
       "cordova-plugin-filepath": {},
-      "cordova-sqlite-storage": {}
+      "cordova-sqlite-storage": {},
+      "com-sarriaroman-photoviewer": {}
     },
     "platforms": [
       "android",

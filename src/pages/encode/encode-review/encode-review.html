@@ -1,0 +1,22 @@
+<ion-content padding>
+    <ion-list>
+        <ion-item>
+            <ion-label color="primary" floating>Password</ion-label>
+            <ion-input placeholder="Password" [(ngModel)]="encode.password"></ion-input>
+        </ion-item>
+
+        <ion-item>
+            <ion-label color="primary" floating>Output File Name</ion-label>
+            <ion-input placeholder="Output File Name" [(ngModel)]="encode.outputName"></ion-input>
+        </ion-item>
+    </ion-list>
+</ion-content>
+<ion-footer>
+    <div text-center class="footer-button-group">
+        <button ion-button round icon-left [disabled]="!encode.lastImage">
+            <span translate>encode</span>
+        </button>
+    </div>
+</ion-footer>
+
+<!--(click)="encode()" [disabled]="!lastImage"-->

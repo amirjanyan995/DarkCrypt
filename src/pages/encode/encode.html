@@ -2,108 +2,116 @@
     <navbar [navName]="'encode_text' | translate"></navbar>
 </ion-header>
 
-<ion-content padding class="home-page">
-    <ion-segment  class="SwipedTabs-tabs"  >
-        <ion-segment-button *ngFor='let tab of tabs ; let i = index ' value="IngoreMe" (click)="selectTab(i)"
-                            [ngClass]='{ "SwipedTabs-activeTab" : ( this.SwipedTabsSlider  && ( this.SwipedTabsSlider.getActiveIndex() === i || (  tabs.length -1 === i&& this.SwipedTabsSlider.isEnd()))) }' >
-            {{tab | translate}}
-        </ion-segment-button>
-    </ion-segment>
-    <div id='indicator' class="SwipedTabs-indicatorSegment" [ngStyle]="{'width.%': (100/this.tabs.length)}"></div>
+<ion-content>
+    <super-tabs id="mainTabs"
+                toolbarBackground="white"
+                indicatorColor="dark"
+                (tabSelect)="onTabSelect($event)">
+        <super-tab [root]="encodePhoto" [title]="'photo' | translate" id="encodePhotoTab"></super-tab>
+        <super-tab [root]="encodeText" [title]="'text' | translate" id="encodeTextTab"></super-tab>
+        <super-tab [root]="encodeReview" [title]="'review' | translate" id="encodeReviewTab"></super-tab>
+    </super-tabs>
+    <!--<ion-segment  class="SwipedTabs-tabs"  >-->
+    <!--<ion-segment-button *ngFor='let tab of tabs ; let i = index ' value="IngoreMe" (click)="selectTab(i)"-->
+    <!--[ngClass]='{ "SwipedTabs-activeTab" : ( this.SwipedTabsSlider  && ( this.SwipedTabsSlider.getActiveIndex() === i || (  tabs.length -1 === i&& this.SwipedTabsSlider.isEnd()))) }' >-->
+    <!--{{tab | translate}}-->
+    <!--</ion-segment-button>-->
+    <!--</ion-segment>-->
+    <!--<div id='indicator' class="SwipedTabs-indicatorSegment" [ngStyle]="{'width.%': (100/this.tabs.length)}"></div>-->
 
-    <ion-slides #SwipedTabsSlider
-                (ionSlideDrag)="animateIndicator($event)"
-                (ionSlideWillChange)="updateIndicatorPosition()"
-                (ionSlideDidChange)="updateIndicatorPosition()"
-                (pan)="updateIndicatorPosition()"
-                [pager]="false"
-                style="height: 93%;">
-        <ion-slide>
-            <div class="fixed-top">
-                <div class="row">
-                    <div class="col">
-                        <ion-card>
-                            <ion-card-content>
-                                <img src="{{ pathForCacheImage(lastImage) }}" />
-                            </ion-card-content>
-                            <ion-item>
-                                <button ion-button color="dark" clear item-start *ngIf="lastImage" (click)="lastImage = null">
-                                    <ion-icon name="trash"></ion-icon>
-                                </button>
-                                <button ion-button color="dark" clear item-end *ngIf="lastImage">
-                                    <ion-icon name="information-circle"></ion-icon>
-                                </button>
-                            </ion-item>
-                        </ion-card>
-                    </div>
-                </div>
-            </div>
-            <div class="fixed-buttom">
-                <div class="row">
-                    <div class="col">
-                        <button ion-button round icon-left icon-start (click)="takePhoto(camera.PictureSourceType.PHOTOLIBRARY)" *ngIf="!lastImage">
-                            <ion-icon ios="ios-images" md="md-images"></ion-icon>
-                            <span translate>gallery</span>
-                        </button>
-                    </div>
-                    <div class="col">
-                        <button ion-button round icon-left icon-end (click)="takePhoto(camera.PictureSourceType.CAMERA)" *ngIf="!lastImage">
-                            <ion-icon ios="ios-camera" md="md-camera"></ion-icon>
-                            <span translate>camera</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </ion-slide>
-        <ion-slide>
-            <div class="fixed-top">
-                <div class="row">
-                    <div class="col">
-                        <textarea #myInput id="myInput" rows="1" maxLength="500" (keyup)="resize()" [(ngModel)]="message"></textarea>
-                    </div>
-                </div>
-            </div>
-            <div class="fixed-buttom">
-                <div class="row">
-                    <div class="col">
-                        <button ion-button round icon-left icon-start (click)="past()">
-                            <ion-icon ios="ios-clipboard" md="md-clipboard"></ion-icon>
-                            <span translate>past</span>
-                        </button>
-                    </div>
-                    <div class="col">
-                        <button ion-button round icon-left icon-end (click)="message = ''" >
-                            <ion-icon ios="ios-trash" md="md-trash"></ion-icon>
-                            <span translate>clear</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </ion-slide>
-        <ion-slide>
-            <div class="fixed-top">
-                <ion-row>
-                    <div class="form-group">
-                        <label for="outputFileName" translate>output_name</label>
-                        <input type="text" class="form-control" [(ngModel)]="outputFileName" id="outputFileName">
-                    </div>
-                </ion-row>
-                <ion-row>
-                    <div class="form-group">
-                        <label for="pwd" translate>password</label>
-                        <input type="text" class="form-control" [(ngModel)]="password" id="pwd">
-                    </div>
-                </ion-row>
-            </div>
-            <div class="fixed-buttom">
-                <div class="row">
-                    <div class="col">
-                        <button ion-button round icon-left (click)="encode()" [disabled]="!lastImage">
-                            <span translate>encode</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </ion-slide>
-    </ion-slides>
+    <!--<ion-slides #SwipedTabsSlider-->
+    <!--(ionSlideDrag)="animateIndicator($event)"-->
+    <!--(ionSlideWillChange)="updateIndicatorPosition()"-->
+    <!--(ionSlideDidChange)="updateIndicatorPosition()"-->
+    <!--(pan)="updateIndicatorPosition()"-->
+    <!--[pager]="false"-->
+    <!--style="height: 93%;">-->
+    <!--<ion-slide>-->
+    <!--<div class="fixed-top">-->
+    <!--<div class="row">-->
+    <!--<div class="col">-->
+    <!--<ion-card>-->
+    <!--<ion-card-content>-->
+    <!--<img src="{{ pathForCacheImage(lastImage) }}" />-->
+    <!--</ion-card-content>-->
+    <!--<ion-item>-->
+    <!--<button ion-button color="dark" clear item-start *ngIf="lastImage" (click)="lastImage = null">-->
+    <!--<ion-icon name="trash"></ion-icon>-->
+    <!--</button>-->
+    <!--<button ion-button color="dark" clear item-end *ngIf="lastImage">-->
+    <!--<ion-icon name="information-circle"></ion-icon>-->
+    <!--</button>-->
+    <!--</ion-item>-->
+    <!--</ion-card>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--<div class="fixed-buttom">-->
+    <!--<div class="row">-->
+    <!--<div class="col">-->
+    <!--<button ion-button round icon-left icon-start (click)="takePhoto(camera.PictureSourceType.PHOTOLIBRARY)" *ngIf="!lastImage">-->
+    <!--<ion-icon ios="ios-images" md="md-images"></ion-icon>-->
+    <!--<span translate>gallery</span>-->
+    <!--</button>-->
+    <!--</div>-->
+    <!--<div class="col">-->
+    <!--<button ion-button round icon-left icon-end (click)="takePhoto(camera.PictureSourceType.CAMERA)" *ngIf="!lastImage">-->
+    <!--<ion-icon ios="ios-camera" md="md-camera"></ion-icon>-->
+    <!--<span translate>camera</span>-->
+    <!--</button>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</ion-slide>-->
+    <!--<ion-slide>-->
+    <!--<div class="fixed-top">-->
+    <!--<div class="row">-->
+    <!--<div class="col">-->
+    <!--<textarea #myInput id="myInput" rows="1" maxLength="500" (keyup)="resize()" [(ngModel)]="message"></textarea>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--<div class="fixed-buttom">-->
+    <!--<div class="row">-->
+    <!--<div class="col">-->
+    <!--<button ion-button round icon-left icon-start (click)="past()">-->
+    <!--<ion-icon ios="ios-clipboard" md="md-clipboard"></ion-icon>-->
+    <!--<span translate>past</span>-->
+    <!--</button>-->
+    <!--</div>-->
+    <!--<div class="col">-->
+    <!--<button ion-button round icon-left icon-end (click)="message = ''" >-->
+    <!--<ion-icon ios="ios-trash" md="md-trash"></ion-icon>-->
+    <!--<span translate>clear</span>-->
+    <!--</button>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</ion-slide>-->
+    <!--<ion-slide>-->
+    <!--<div class="fixed-top">-->
+    <!--<ion-row>-->
+    <!--<div class="form-group">-->
+    <!--<label for="outputFileName" translate>output_name</label>-->
+    <!--<input type="text" class="form-control" [(ngModel)]="outputFileName" id="outputFileName">-->
+    <!--</div>-->
+    <!--</ion-row>-->
+    <!--<ion-row>-->
+    <!--<div class="form-group">-->
+    <!--<label for="pwd" translate>password</label>-->
+    <!--<input type="text" class="form-control" [(ngModel)]="password" id="pwd">-->
+    <!--</div>-->
+    <!--</ion-row>-->
+    <!--</div>-->
+    <!--<div class="fixed-buttom">-->
+    <!--<div class="row">-->
+    <!--<div class="col">-->
+    <!--<button ion-button round icon-left (click)="encode()" [disabled]="!lastImage">-->
+    <!--<span translate>encode</span>-->
+    <!--</button>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</ion-slide>-->
+    <!--</ion-slides>-->
 </ion-content>

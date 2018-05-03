@@ -2,7 +2,12 @@
   <navbar [navName]="'decode_text' | translate"></navbar>
 </ion-header>
 
-
-<ion-content padding>
-  <h2>Decode text</h2>
+<ion-content>
+  <super-tabs id="mainTabs"
+              toolbarBackground="white"
+              indicatorColor="dark"
+              (tabSelect)="onTabSelect($event)">
+    <super-tab [root]="decodePhoto" [title]="'photo' | translate" id="decodePhotoTab"></super-tab>
+    <super-tab [root]="decodeText" [title]="'text' | translate" id="decodeTextTab"></super-tab>
+  </super-tabs>
 </ion-content>

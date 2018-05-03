@@ -1,0 +1,28 @@
+<ion-content style="max-height:100vh;">
+    <ion-card>
+        <ion-card-content>
+            <img src="{{ encode.pathForCacheImage(encode.lastImage) }}" (click)="encode.showImg()"/>
+        </ion-card-content>
+        <ion-item *ngIf="encode.lastImage">
+            <button ion-button color="dark" clear item-start *ngIf="encode.lastImage" (click)="encode.lastImage = null">
+                <ion-icon name="trash"></ion-icon>
+            </button>
+            <button ion-button color="dark" clear item-end *ngIf="encode.lastImage">
+                <ion-icon name="information-circle"></ion-icon>
+            </button>
+        </ion-item>
+    </ion-card>
+</ion-content>
+<ion-footer *ngIf="!encode.lastImage">
+    <div text-center class="footer-button-group">
+        <button ion-button round icon-left icon-start (click)="encode.takePhoto(encode.camera.PictureSourceType.PHOTOLIBRARY)">
+            <ion-icon ios="ios-images" md="md-images"></ion-icon>
+            <span translate>gallery</span>
+        </button>
+
+        <button ion-button round icon-left icon-end (click)="encode.takePhoto(encode.camera.PictureSourceType.CAMERA)">
+            <ion-icon ios="ios-camera" md="md-camera"></ion-icon>
+            <span translate>camera</span>
+        </button>
+    </div>
+</ion-footer>

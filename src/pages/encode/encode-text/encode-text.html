@@ -1,0 +1,19 @@
+<ion-content padding>
+    <ion-item>
+        <ion-label color="primary" floating>Message</ion-label>
+        <ion-textarea autoresize="100" [(ngModel)]="encode.message"></ion-textarea>
+    </ion-item>
+</ion-content>
+<ion-footer>
+    <div text-center class="footer-button-group">
+        <button ion-button round icon-left icon-start (click)="past()">
+            <ion-icon ios="ios-clipboard" md="md-clipboard"></ion-icon>
+            <span translate>past</span>
+        </button>
+
+        <button ion-button round icon-left icon-end (click)="encode.message = ''">
+            <ion-icon ios="ios-trash" md="md-trash"></ion-icon>
+            <span translate>clear</span>
+        </button>
+    </div>
+</ion-footer>

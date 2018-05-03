@@ -1,12 +1,15 @@
 <ion-menu [content]="content" persistent="true">
     <ion-content padding>
+        <div>
+            <span class="nav-title">DarkCrypt</span>
+        </div>
         <ion-list>
             <button menuClose ion-item *ngFor="let page of pages" (click)="openPage(page)">
-                <ion-icon name="{{page.icon}}"></ion-icon>
+                <ion-icon name="{{page.icon}}" item-left></ion-icon>
                 {{page.title | translate}}
             </button>
             <button menuClose ion-item (click)="exitApp()">
-                <ion-icon name="md-exit"></ion-icon>
+                <ion-icon name="md-exit" item-left></ion-icon>
                 <span translate>exit</span>
             </button>
         </ion-list>
