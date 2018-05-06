@@ -1,16 +1,18 @@
 import { Component } from '@angular/core';
 import { IonicPage } from 'ionic-angular';
-import { EncodeProvider } from "../../../providers/encode/encode";
+import { EncodeServiceProvider } from "../../../providers/encode-service/encode-service";
+import { Camera } from "@ionic-native/camera";
 
 @IonicPage()
 @Component({
-  selector: 'page-encode-photo',
-  templateUrl: 'encode-photo.html',
+    selector: 'page-encode-photo',
+    templateUrl: 'encode-photo.html',
 })
 export class EncodePhotoPage {
 
-  constructor(public encode: EncodeProvider) {
-
-  }
-
+    constructor(
+        public encodeService: EncodeServiceProvider,
+        private camera: Camera
+    ) {
+    }
 }

@@ -1,4 +1,5 @@
 export const FOLDER_NAME = 'DarkCrypt';
+export const DEFAULT_IMG = 'assets/imgs/misc/img-icon.png';
 /**
  *  Storage Key name
  */

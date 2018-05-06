@@ -56,11 +56,7 @@ export class EncodePage {
         private clipboard: Clipboard,
         private storage: Storage,)
     {
-        console.log(this.encode.pathForCacheImage(this.lastImage));
-    }
 
-    onTabSelect(ev: any) {
-        console.log('Tab selected', 'Index: ' + ev.index, 'Unique ID: ' + ev.id);
     }
 
     resize() {

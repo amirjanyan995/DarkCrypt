@@ -19,7 +19,7 @@ export class DecodeTextPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad DecodeTextPage');
+
   }
 
 }

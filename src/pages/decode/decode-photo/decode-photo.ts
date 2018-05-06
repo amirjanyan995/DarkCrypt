@@ -49,7 +49,6 @@ export class DecodePhotoPage {
      */
     initialiseCanvas()
     {
-        console.log('A'.codePointAt(0));
         if(this._CANVAS.getContext)
         {
             this._CONTEXT = this._CANVAS.getContext('2d');
@@ -94,9 +93,7 @@ export class DecodePhotoPage {
         //     data[i]     = 255 - data[i];     // red
         //     data[i + 1] = 255 - data[i + 1]; // green
         //     data[i + 2] = 255 - data[i + 2]; // blue
-        //     console.log(data[i])
         // }
-        // console.log(data)
         // this._CONTEXT.putImageData(imageData, 0, 0);
         this.img = this.getDataURL();
     };
@@ -106,7 +103,6 @@ export class DecodePhotoPage {
      * @returns {any}
      */
     getDataURL(){
-        console.log(this.extension)
         return this._CANVAS.toDataURL(this.extension);
     }
 
@@ -184,14 +180,10 @@ export class DecodePhotoPage {
 
         // Convert the base64 string in a Blob
         var DataBlob = this.b64toBlob(content,contentType);
-        console.log('dataBlob');
-        console.log(DataBlob);
 
-        console.log("Starting to write the file :3");
         let self = this;
         this.file.resolveDirectoryUrl(folderpath).then((path)=>{
             self.file.getFile(path,filename,{create:true}).then(file => {
-                console.log(file);
                 file.createWriter(function(fileWriter) {
                     fileWriter.write(DataBlob);
                 }, function(){
@@ -199,19 +191,6 @@ export class DecodePhotoPage {
                 });
             })
         });
-        //
-        // window.resolveLocalFileSystemURL(folderpath, function(dir) {
-        //     console.log("Access to the directory granted succesfully");
-        //     this.file.getFile(filename, {create:true}, function(file) {
-        //         console.log("File created succesfully.");
-        //         file.createWriter(function(fileWriter) {
-        //             console.log("Writing content to file");
-        //             fileWriter.write(DataBlob);
-        //         }, function(){
-        //             alert('Unable to save file in path '+ folderpath);
-        //         });
-        //     });
-        // });
     }
 
 

@@ -5,8 +5,7 @@
 <ion-content>
     <super-tabs id="mainTabs"
                 toolbarBackground="white"
-                indicatorColor="dark"
-                (tabSelect)="onTabSelect($event)">
+                indicatorColor="dark">
         <super-tab [root]="encodePhoto" [title]="'photo' | translate" id="encodePhotoTab"></super-tab>
         <super-tab [root]="encodeText" [title]="'text' | translate" id="encodeTextTab"></super-tab>
         <super-tab [root]="encodeReview" [title]="'review' | translate" id="encodeReviewTab"></super-tab>

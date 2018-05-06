@@ -1,26 +1,26 @@
 <ion-content style="max-height:100vh;">
     <ion-card>
         <ion-card-content>
-            <img src="{{ encode.pathForCacheImage(encode.lastImage) }}" (click)="encode.showImg()"/>
+            <img [src]="encodeService.pathToImage" (click)="encodeService.showImg()"/>
         </ion-card-content>
-        <ion-item *ngIf="encode.lastImage">
-            <button ion-button color="dark" clear item-start *ngIf="encode.lastImage" (click)="encode.lastImage = null">
+        <ion-item *ngIf="encodeService.lastImage">
+            <button ion-button color="dark" clear item-start *ngIf="encodeService.lastImage" (click)="encodeService.removePhoto()">
                 <ion-icon name="trash"></ion-icon>
             </button>
-            <button ion-button color="dark" clear item-end *ngIf="encode.lastImage" (click)="encode.showInformation()">
+            <button ion-button color="dark" clear item-end *ngIf="encodeService.lastImage">
+                <!--(click)="encodeService.showInformation()"-->
                 <ion-icon name="information-circle"></ion-icon>
             </button>
         </ion-item>
     </ion-card>
 </ion-content>
-<ion-footer *ngIf="!encode.lastImage">
+<ion-footer *ngIf="!encodeService.lastImage">
     <div text-center class="footer-button-group">
-        <button ion-button round icon-left icon-start (click)="encode.takePhoto(encode.camera.PictureSourceType.PHOTOLIBRARY)">
+        <button ion-button round icon-left icon-start (click)="encodeService.takePhoto(camera.PictureSourceType.PHOTOLIBRARY)">
             <ion-icon ios="ios-images" md="md-images"></ion-icon>
             <span translate>gallery</span>
         </button>
-
-        <button ion-button round icon-left icon-end (click)="encode.takePhoto(encode.camera.PictureSourceType.CAMERA)">
+        <button ion-button round icon-left icon-end (click)="encodeService.takePhoto(camera.PictureSourceType.CAMERA)">
             <ion-icon ios="ios-camera" md="md-camera"></ion-icon>
             <span translate>camera</span>
         </button>
