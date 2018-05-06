@@ -45,6 +45,9 @@ import { IonicStorageModule } from "@ionic/storage";
 import { EncodeProvider } from '../providers/encode/encode';
 import { DatabaseProvider } from '../providers/database/database';
 import { FileServiceProvider } from '../providers/file-service/file-service';
+import { DecodeServiceProvider } from '../providers/decode-service/decode-service';
+import { EncodeServiceProvider } from '../providers/encode-service/encode-service';
+import { PhotoServiceProvider } from '../providers/photo-service/photo-service';
 
 @NgModule({
     declarations: [
@@ -109,8 +112,12 @@ import { FileServiceProvider } from '../providers/file-service/file-service';
         SplashScreen,
         {provide: ErrorHandler, useClass: IonicErrorHandler},
         DatabaseProvider,
+        // custom providers
         EncodeProvider,
-    FileServiceProvider
+        FileServiceProvider,
+        DecodeServiceProvider,
+        EncodeServiceProvider,
+        PhotoServiceProvider
     ]
 })
 

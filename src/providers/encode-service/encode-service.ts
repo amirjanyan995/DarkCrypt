@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 
 @Injectable()
-export class FileServiceProvider {
+export class EncodeServiceProvider {
 
-    constructor() {
+  constructor() {
 
-    }
+  }
 
 }

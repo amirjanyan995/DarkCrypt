@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 
 @Injectable()
-export class FileServiceProvider {
+export class PhotoServiceProvider {
 
-    constructor() {
-
-    }
+  constructor() {
+  }
 
 }

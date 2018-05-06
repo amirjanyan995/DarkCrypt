@@ -6,6 +6,7 @@ import {Camera} from "@ionic-native/camera";
 import { PhotoViewer } from '@ionic-native/photo-viewer';
 import {Clipboard} from "@ionic-native/clipboard";
 import { ImageInformationModalPage } from "../../pages/image-information-modal/image-information-modal";
+import * as Const from '../../util/constants';
 
 declare var cordova: any;
 
@@ -13,7 +14,6 @@ declare var cordova: any;
 export class EncodeProvider {
 
     public lastImage:any = null;
-    public folderName = 'DarkCrypt';
     public message:string;
 
     constructor(
@@ -38,7 +38,8 @@ export class EncodeProvider {
         let imgInfoModal = this.modalCtrl.create(ImageInformationModalPage, {imgPath: path});
         imgInfoModal.present();
     }
-// Take new photo from camera or gallery
+
+    // Take new photo from camera or gallery
     public takePhoto(sourceType) {
         if (sourceType === this.camera.PictureSourceType.PHOTOLIBRARY) {
             this.imagePicker.getPictures({
@@ -132,7 +133,7 @@ export class EncodeProvider {
 
 // Always get the accurate path to your project created folder
     public pathForProjectImage(img) {
-        return img === null ? 'assets/imgs/misc/img-icon.png' : this.file.externalRootDirectory + this.folderName + '/' + img;
+        return img === null ? 'assets/imgs/misc/img-icon.png' : this.file.externalRootDirectory + Const.FOLDER_NAME + '/' + img;
     }
 
 // Always get the accurate path to your apps folder
