@@ -7,7 +7,7 @@
             <button ion-button color="dark" clear item-start *ngIf="encode.lastImage" (click)="encode.lastImage = null">
                 <ion-icon name="trash"></ion-icon>
             </button>
-            <button ion-button color="dark" clear item-end *ngIf="encode.lastImage">
+            <button ion-button color="dark" clear item-end *ngIf="encode.lastImage" (click)="encode.showInformation()">
                 <ion-icon name="information-circle"></ion-icon>
             </button>
         </ion-item>

@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { File } from "@ionic-native/file";
-import {ToastController} from "ionic-angular";
+import {ModalController, ToastController} from "ionic-angular";
 import {ImagePicker} from "@ionic-native/image-picker";
 import {Camera} from "@ionic-native/camera";
 import { PhotoViewer } from '@ionic-native/photo-viewer';
 import {Clipboard} from "@ionic-native/clipboard";
+import { ImageInformationModalPage } from "../../pages/image-information-modal/image-information-modal";
 
 declare var cordova: any;
 
@@ -22,6 +23,7 @@ export class EncodeProvider {
         private imagePicker: ImagePicker,
         public camera: Camera,
         private clipboard: Clipboard,
+        public modalCtrl: ModalController
     ) {
 
     }
@@ -30,6 +32,11 @@ export class EncodeProvider {
         if (this.lastImage) {
             this.photoViewer.show(this.pathForCacheImage(this.lastImage));
         }
+    }
+    public showInformation() {
+        let path = this.pathForCacheImage(this.lastImage);
+        let imgInfoModal = this.modalCtrl.create(ImageInformationModalPage, {imgPath: path});
+        imgInfoModal.present();
     }
 // Take new photo from camera or gallery
     public takePhoto(sourceType) {

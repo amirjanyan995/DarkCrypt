@@ -22,6 +22,7 @@ import { ImagePicker } from '@ionic-native/image-picker';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Clipboard } from "@ionic-native/clipboard";
 
+import { Base64ToGallery } from "@ionic-native/base64-to-gallery";
 import { File } from '@ionic-native/file';
 import { Transfer } from '@ionic-native/transfer';
 import { FilePath } from '@ionic-native/file-path';
@@ -43,6 +44,7 @@ import { IonicStorageModule } from "@ionic/storage";
  */
 import { EncodeProvider } from '../providers/encode/encode';
 import { DatabaseProvider } from '../providers/database/database';
+import { FileServiceProvider } from '../providers/file-service/file-service';
 
 @NgModule({
     declarations: [
@@ -97,6 +99,7 @@ import { DatabaseProvider } from '../providers/database/database';
     providers: [
         Camera,
         PhotoViewer,
+        Base64ToGallery,
         File,
         FilePath,
         Transfer,
@@ -106,7 +109,8 @@ import { DatabaseProvider } from '../providers/database/database';
         SplashScreen,
         {provide: ErrorHandler, useClass: IonicErrorHandler},
         DatabaseProvider,
-        EncodeProvider
+        EncodeProvider,
+    FileServiceProvider
     ]
 })
 

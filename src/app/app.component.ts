@@ -35,18 +35,9 @@ export class MyApp {
             { title: 'decode_text', component: DecodePage, icon: 'md-unlock' },
             { title: 'settings', component: SettingsPage, icon: 'md-settings' }
         ];
-        this.initTranslate();
-    }
-
-    initTranslate() {
         // Set the default language for translation strings, and the current language.
         this.translate.setDefaultLang('en');
-
-        this.storage.get('language').then((language) => {
-            this.translate.use(language != null ? language : 'en'); // Set your language here
-        });
     }
-
 
     /**
      *  Init App
@@ -56,6 +47,29 @@ export class MyApp {
             this.statusBar.styleDefault();
             // this.splashScreen.hide();
         });
+
+        // language
+        this.storage.get('language').then((language) => {
+            this.translate.use(language != null ? language : 'en');
+            if(language == null) {
+                this.storage.set('language', 'en');
+            }
+        });
+
+        // extension
+        this.storage.get('extension').then((extension) => {
+            if(extension == null) {
+                this.storage.set('extension', 'jpg');
+            }
+        });
+
+        //character type
+        this.storage.get('character_type').then((type) => {
+            if(type == null ){
+                this.storage.set('character_type', 'unicode');
+            }
+        });
+
     }
 
     /**

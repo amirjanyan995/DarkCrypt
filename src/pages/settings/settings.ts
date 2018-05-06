@@ -20,8 +20,9 @@ import { TranslateService } from "@ngx-translate/core";
 export class SettingsPage {
     @ViewChild(List) list: List;
 
-    private language:string;
-    private extension:string;
+    private language:any = 'en';
+    private extension:any = 'jpg';
+    private characterType:any = 'unicode';
 
     // Project languages
     public languages:any = [
@@ -46,29 +47,37 @@ export class SettingsPage {
             name: 'PNG'
         }];
 
+    // Characters type
+    public charactersType:any = [
+        {
+            value: 'ascii',
+            name: 'ASCII'
+        },{
+            value: 'unicode',
+            name: 'Unicode'
+        }];
+
     constructor(
         private translate: TranslateService,
         private storage: Storage)
     {
         // set language
         this.storage.get('language').then((language) => {
-            if( language == null ) {
-                this.storage.set('language', 'en');
-                this.language = 'en'
-            } else {
-                this.language = language
-            }
-            this.translate.use(this.language);
+            this.storage.set('language', language);
+            this.language = language
+            this.translate.use(language);
         });
 
         // set output file extension
         this.storage.get('extension').then((extension) => {
-            if ( extension == null ) {
-                this.storage.set('extension', 'jpg');
-                this.extension =  'jpg'
-            } else {
-                this.extension = extension
-            }
+            this.storage.set('extension', extension);
+            this.extension = extension
+        });
+
+        // set characters type
+        this.storage.get('character_type').then((type) => {
+            this.storage.set('character_type', type);
+            this.characterType = type
         });
     }
 
@@ -86,6 +95,13 @@ export class SettingsPage {
      */
     selectExtension(){
         this.storage.set('extension', this.extension);
+    }
+
+    /**
+     * Set characters type
+     */
+    selectCharacterType(){
+        this.storage.set('character_type', this.characterType)
     }
 
 }
