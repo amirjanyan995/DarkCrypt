@@ -1,28 +1,31 @@
 <ion-content style="max-height:100vh;">
-    <ion-card>
+    <ion-card [class.marg]="!encodeService.lastImage">
         <ion-card-content>
-            <img [src]="encodeService.pathToImage" (click)="encodeService.showImg()"/>
+            <img [src]="encodeService.pathToImage" (click)="encodeService.showImg()" />
         </ion-card-content>
         <ion-item *ngIf="encodeService.lastImage">
-            <button ion-button color="dark" clear item-start *ngIf="encodeService.lastImage" (click)="encodeService.removePhoto()">
+            <button ion-button color="dark" clear item-start  (click)="encodeService.removePhoto()">
                 <ion-icon name="trash"></ion-icon>
             </button>
-            <button ion-button color="dark" clear item-end *ngIf="encodeService.lastImage">
-                <!--(click)="encodeService.showInformation()"-->
+            <button ion-button color="dark" clear item-end (click)="encodeService.showInformation()">
                 <ion-icon name="information-circle"></ion-icon>
             </button>
         </ion-item>
     </ion-card>
-</ion-content>
-<ion-footer *ngIf="!encodeService.lastImage">
-    <div text-center class="footer-button-group">
-        <button ion-button round icon-left icon-start (click)="encodeService.takePhoto(camera.PictureSourceType.PHOTOLIBRARY)">
+    <div text-center *ngIf="!encodeService.lastImage"  class="btn-wrapper">
+        <button ion-button outline icon-left icon-start (click)="encodeService.takePhoto(camera.PictureSourceType.PHOTOLIBRARY)">
             <ion-icon ios="ios-images" md="md-images"></ion-icon>
             <span translate>gallery</span>
         </button>
-        <button ion-button round icon-left icon-end (click)="encodeService.takePhoto(camera.PictureSourceType.CAMERA)">
+
+        <button ion-button outline icon-left icon-end (click)="encodeService.takePhoto(camera.PictureSourceType.CAMERA)">
             <ion-icon ios="ios-camera" md="md-camera"></ion-icon>
             <span translate>camera</span>
         </button>
     </div>
-</ion-footer>
+</ion-content>
+<!--<ion-footer [class.hide]=" encodeService.lastImage">-->
+    <!--<div text-center class="footer-button-group">-->
+        <!---->
+    <!--</div>-->
+<!--</ion-footer>-->

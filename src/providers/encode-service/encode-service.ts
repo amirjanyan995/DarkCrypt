@@ -1,19 +1,20 @@
 import { Injectable } from '@angular/core';
-import {Camera} from "@ionic-native/camera";
-import {PhotoServiceProvider} from "../photo-service/photo-service";
-import {FileServiceProvider} from "../file-service/file-service";
-import {PhotoViewer} from "@ionic-native/photo-viewer";
+import { Camera } from "@ionic-native/camera";
+import { PhotoServiceProvider } from "../photo-service/photo-service";
+import { FileServiceProvider } from "../file-service/file-service";
+import { PhotoViewer } from "@ionic-native/photo-viewer";
 import * as Const from '../../util/constants';
+import { ToastController} from "ionic-angular";
 
 @Injectable()
 export class EncodeServiceProvider {
 
     private lastImage:any = null;
     private lastPath:any = null;
-    private data:any;
 
     constructor(
         private camera:Camera,
+        public toastCtrl: ToastController,
         private photoViewer: PhotoViewer,
         private photoService:PhotoServiceProvider,
         private fileService:FileServiceProvider)
@@ -32,26 +33,22 @@ export class EncodeServiceProvider {
     public takePhoto(sourceType){
         if(sourceType === this.camera.PictureSourceType.CAMERA) {
             this.photoService.takePhotoFromCamera().then( data => {
-                this.data = data;
-                this.lastImage = this.data.name
-                this.lastPath = this.data.pathName
+                // this.data = data;
+                this.lastImage = data[0].name
+                this.lastPath = data[0].path
             }).catch( err => {
                 console.log(err)
+                this.presentToast('Something went wrong.');
             });
         } else {
             this.photoService.takePhotoFromGallery().then( data => {
-                this.data = data;
-                this.lastImage = this.data.name
-                this.lastPath = this.data.pathName
+                this.lastImage = data[0].name
+                this.lastPath = data[0].path
             }).catch(err => {
                 console.log(err);
+                this.presentToast('Something went wrong.');
             })
         }
-    }
-
-    private subName(imagePath) {
-        this.lastImage = imagePath.substr(imagePath.lastIndexOf('/') + 1);
-        this.lastPath= imagePath.substr(0, imagePath.lastIndexOf('/') + 1);
     }
 
     /**
@@ -59,7 +56,7 @@ export class EncodeServiceProvider {
      */
     public removePhoto(){
         this.fileService.removeFile(this.lastPath,this.lastImage).catch(err => {
-            console.log(err)
+            this.presentToast('The image couldn\'t be deleted')
         })
         this.lastImage = null;
         this.lastPath = null;
@@ -74,6 +71,15 @@ export class EncodeServiceProvider {
         }
     }
 
+    public showInformation(){
+        if (this.lastPath === null || this.lastImage === null) return;
+        this.fileService.getImgFile(this.lastPath,this.lastImage).then(data => {
+            this.photoService.showInformation(data)
+        }).catch(err => {
+            console.log(err)
+        });
+    }
+
     /**
      * Path to selected image
      * @returns {string}
@@ -86,4 +92,16 @@ export class EncodeServiceProvider {
         }
     }
 
+    /**
+     * Show Message
+     * @param text
+     */
+    private presentToast(text) {
+        let toast = this.toastCtrl.create({
+            message: text,
+            duration: 3000,
+            position: 'top'
+        });
+        toast.present();
+    }
 }

@@ -1,13 +1,16 @@
 import { Injectable } from '@angular/core';
-import {ImagePicker} from "@ionic-native/image-picker";
-import {Camera} from "@ionic-native/camera";
+import { ImagePicker } from "@ionic-native/image-picker";
+import { Camera } from "@ionic-native/camera";
+import {AlertController, ModalController} from "ionic-angular";
 
 @Injectable()
 export class PhotoServiceProvider {
 
     constructor(
         private imagePicker: ImagePicker,
-        private camera:Camera
+        private camera:Camera,
+        public modalCtrl: ModalController,
+        public alertCtrl: AlertController
     ){
     }
 
@@ -28,10 +31,12 @@ export class PhotoServiceProvider {
             }).then( imagePath => {
                 if(imagePath.length) {
                     imagePath = imagePath[0];;
-                    resolve({
-                        name: imagePath.substr(imagePath.lastIndexOf('/') + 1),
-                        pathName: imagePath.substr(0, imagePath.lastIndexOf('/') + 1)
-                    })
+                    let data:Array<{name:string, path:string}> = [
+                        {
+                            name: imagePath.substr(imagePath.lastIndexOf('/') + 1),
+                            path: imagePath.substr(0, imagePath.lastIndexOf('/') + 1)
+                        }];
+                    resolve(data)
                 }
             }).catch(err => {
                 reject(err);
@@ -59,10 +64,12 @@ export class PhotoServiceProvider {
         let self = this;
         let promise = new Promise((resolve, reject) => {
             self.camera.getPicture(options).then(imagePath => {
-                resolve({
-                    name: imagePath.substr(imagePath.lastIndexOf('/') + 1),
-                    pathName: imagePath.substr(0, imagePath.lastIndexOf('/') + 1)
-                })
+                let data:Array<{name:string, path:string}> = [
+                    {
+                        name: imagePath.substr(imagePath.lastIndexOf('/') + 1),
+                        path: imagePath.substr(0, imagePath.lastIndexOf('/') + 1)
+                    }];
+                resolve(data)
             }).catch( err => {
                 reject(err);
             });
@@ -70,4 +77,21 @@ export class PhotoServiceProvider {
         return promise;
     }
 
+
+    public showInformation(data:any){
+        let img = new Image();
+        img.src = data.path;
+        let alert = this.alertCtrl.create({
+            title: 'Details',
+            message:
+            '<p>Name: ' + data.name + '</p>' +
+            '<p>Width: ' + img.width + 'px </p>' +
+            '<p>Height: ' + img.height + 'px </p>' +
+            '<p>Size: ' + data.size + ' </p>' +
+            '<p>Date: ' + data.date + ' </p>' +
+            '<p>Path: ' + data.path + ' </p>',
+            cssClass: 'img-information'
+        });
+        alert.present();
+    }
 }

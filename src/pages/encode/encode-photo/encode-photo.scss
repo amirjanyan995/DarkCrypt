@@ -8,8 +8,25 @@ page-encode-photo {
   }
 
   ion-card img {
+    max-height: 70vh;
     width: auto;
-    max-height: 71vh;
     display: block;
+    margin: 0 auto;
+  }
+
+  .hide {
+    display: none;
+  }
+
+  .marg {
+    margin-top: 5vh;
+  }
+  @media screen and (orientation:landscape) {
+    ion-card img {
+      max-height: 59vh;
+    }
+    .marg {
+      margin-top: 1vh;
+    }
   }
 }

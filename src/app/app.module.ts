@@ -11,7 +11,7 @@ import { EncodePage} from "../pages/encode/encode";
 import { EncodePhotoPage } from "../pages/encode/encode-photo/encode-photo";
 import { EncodeTextPage } from "../pages/encode/encode-text/encode-text";
 import { EncodeReviewPage } from "../pages/encode/encode-review/encode-review";
-
+import { ScreenOrientation } from "@ionic-native/screen-orientation";
 // page decode
 import { DecodePage} from "../pages/decode/decode";
 import { DecodePhotoPage } from "../pages/decode/decode-photo/decode-photo";
@@ -112,6 +112,7 @@ import { PhotoServiceProvider } from '../providers/photo-service/photo-service';
         SplashScreen,
         {provide: ErrorHandler, useClass: IonicErrorHandler},
         DatabaseProvider,
+        ScreenOrientation,
         // custom providers
         EncodeProvider,
         FileServiceProvider,

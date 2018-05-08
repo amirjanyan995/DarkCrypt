@@ -1,3 +1,8 @@
+//ion-content {
+//  background-color: #263E44 !important;
+//  color:#fff;
+//}
+
 .fixed-buttom{
   position: absolute;
   bottom: 0px;
@@ -20,7 +25,24 @@
 }
 .footer-button-group button{
   width: 45%;
-  height: 40px;
+}
+@media screen and (orientation:landscape) {
+  .footer-button-group button {
+    width: 48%;
+  }
+}
+
+  .btn-wrapper {
+  padding: 7px 0px 7px 0px;
+  left: 0;
+  bottom: 1vh;
+  position: absolute;
+  z-index: 10;
+  display: block;
+  width: 100%;
+}
+.btn-wrapper button{
+  width: 45%;
 }
 .nav-title {
   margin-left: 17px;
@@ -36,4 +58,28 @@
   text-transform: none;
 }
 
+.img-information{
+
+  .alert-wrapper{
+    opacity: 0.7 !important;
+    border-radius: 15px;
+    overflow-y: hidden;
+    background-color: black;
+
+    .alert-head{
+      color: white;
+      text-align: center;
+      border-bottom: 1px solid white;
+      .alert-title{
+        font-size: 17px !important;
+      }
+    }
+    .alert-message{
+      color: white;
+    }
+    //.alert-button-group{
+    //  display: none;
+    //}
+  }
+}
 

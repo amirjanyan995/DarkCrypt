@@ -29,6 +29,7 @@
     "@ionic-native/file-path": "^4.7.0",
     "@ionic-native/image-picker": "^4.7.0",
     "@ionic-native/photo-viewer": "^4.7.0",
+    "@ionic-native/screen-orientation": "^4.7.0",
     "@ionic-native/splash-screen": "4.6.0",
     "@ionic-native/sqlite": "^4.7.0",
     "@ionic-native/status-bar": "4.6.0",
@@ -52,9 +53,11 @@
     "cordova-plugin-image-picker": "git+https://github.com/wymsee/cordova-imagePicker.git",
     "cordova-plugin-ionic-keyboard": "^2.0.5",
     "cordova-plugin-ionic-webview": "^1.1.16",
+    "cordova-plugin-screen-orientation": "^3.0.1",
     "cordova-plugin-splashscreen": "^5.0.2",
     "cordova-plugin-telerik-imagepicker": "^2.1.10",
     "cordova-plugin-whitelist": "^1.3.3",
+    "es6-promise-plugin": "^4.2.2",
     "express": "^4.15.4",
     "ionic-angular": "3.9.2",
     "ionic2-super-tabs": "^4.2.2",
@@ -99,7 +102,8 @@
       "cordova-plugin-filepath": {},
       "cordova-sqlite-storage": {},
       "com-sarriaroman-photoviewer": {},
-      "cordova-base64-to-gallery": {}
+      "cordova-base64-to-gallery": {},
+      "cordova-plugin-screen-orientation": {}
     },
     "platforms": [
       "android",

@@ -3,7 +3,7 @@ import { IonicPage, NavController } from 'ionic-angular';
 import { ActionSheetController, ToastController, Platform, LoadingController } from 'ionic-angular';
 import { ImagePicker } from "@ionic-native/image-picker";
 import { Clipboard } from '@ionic-native/clipboard';
-
+import { ScreenOrientation } from "@ionic-native/screen-orientation";
 // inner pages
 import { EncodePhotoPage } from "./encode-photo/encode-photo";
 import { EncodeTextPage } from "./encode-text/encode-text";
@@ -54,9 +54,14 @@ export class EncodePage {
         public platform: Platform,
         private imagePicker: ImagePicker,
         private clipboard: Clipboard,
-        private storage: Storage,)
+        private storage: Storage,
+        private screen: ScreenOrientation)
     {
 
+        this.screen.onChange().subscribe(() => {
+            this.superTabsCtrl.showToolbar(!this.screen.type.startsWith('landscape'))
+        });
+        this.superTabsCtrl.showToolbar(!this.screen.type.startsWith('landscape'));
     }
 
     resize() {

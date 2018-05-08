@@ -18,5 +18,6 @@
   "photo": "Photo",
   "text": "Text",
   "review": "Review",
-  "character" : "Characters type:"
+  "character" : "Characters type:",
+  "message": "Message"
 }

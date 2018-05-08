@@ -2,11 +2,12 @@ import { Injectable } from '@angular/core';
 import { File } from "@ionic-native/file";
 import * as Const from '../../util/constants';
 
+declare var window;
+
 @Injectable()
 export class FileServiceProvider {
 
     constructor(private file: File) {
-
     }
 
     /**
@@ -105,11 +106,31 @@ export class FileServiceProvider {
             self.file.removeFile(pathName,fileName).then( () => {
                 resolve('File successfully removed.')
             }).catch( err => {
-                console.log(err);
                 reject(err);
             })
         })
         return promise;
+    }
+
+    public getImgFile(path:string, name:string){
+        let self = this;
+        return new Promise((resolve, reject) => {
+            self.file.resolveDirectoryUrl(path).then(url => {
+                self.file.getFile(url,name,{}).then( file => {
+                    window.resolveLocalFileSystemURL(file.nativeURL, (fileEntry) => {
+                        fileEntry.getMetadata((metadata) => {
+                            let details = {
+                                name: file.name,
+                                path: file.nativeURL,
+                                size: metadata.size,
+                                date: metadata.modificationTime
+                            }
+                            resolve(details);
+                        });
+                    });
+                })
+            });
+        })
     }
 
 }

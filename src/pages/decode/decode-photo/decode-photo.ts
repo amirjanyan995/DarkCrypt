@@ -69,20 +69,14 @@ export class DecodePhotoPage {
             this._CANVAS.width = source.width;
             this._CONTEXT.drawImage(source, 0, 0);
 
-            // var imageData = this._CONTEXT.getImageData(0, 0, this._CANVAS.width, this._CANVAS.height);
-            // var data = imageData.data;
-
-            this.invert();
-
-
-            // this._CONTEXT.font = "32px impact";
-            // this._CONTEXT.textAlign = 'center';
-            // this._CONTEXT.fillStyle = 'black';
-            // this._CONTEXT.fillText(this.text, this._CANVAS.width / 2, this._CANVAS.height * 0.8);
-
-
+            this._CONTEXT.font = "32px impact";
+            this._CONTEXT.textAlign = 'center';
+            this._CONTEXT.fillStyle = 'black';
+            this._CONTEXT.fillText(this.text, this._CANVAS.width / 2, this._CANVAS.height * 0.8);
         };
+        this.img = this.getDataURL();
     }
+
     invert() {
         for (let i=0; i<30; i++) {
             for (let j=0; j<20; j++) {
