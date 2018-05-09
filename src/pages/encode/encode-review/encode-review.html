@@ -15,6 +15,7 @@
     </ion-list>
     <div text-center class="btn-wrapper">
         <button ion-button outline icon-left [disabled]="!encodeService.lastImage" (click)="encodeService.encode()">
+            <ion-icon ios="ios-key" md="md-key"></ion-icon>
             <span translate>encode</span>
         </button>
     </div>

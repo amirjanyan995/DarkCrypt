@@ -1,50 +1,9 @@
 page-encode {
-
-
   .img-preview {
     width: 95%;
     height: auto;
     max-height: min-content;
   }
-
-  .SwipedTabs-indicatorSegment
-  {
-    -webkit-transition: 0.3s all;
-    -moz-transition:  0.3s all;
-    -o-transition:  0.3s all;
-    transition:  0.3s all;
-    transform-origin: top 0 left 0;
-    height: 1px;
-    position: relative;
-    top: 0px;
-    background-color: black !important;
-  }
-
-  .SwipedTabs-tabs ion-segment-button
-  {
-    border:none !important;
-    color:gray!important;
-    background-color:white!important;
-  }
-
-  .SwipedTabs-tabs ion-segment-button.SwipedTabs-activeTab
-  {
-    color:black !important;
-  }
-
-  .SwipedTabs-tabs
-  {
-    border-bottom: solid 1px #e6e6e6  !important;
-  }
-
-  div.swiper-pagination {
-    top:20px;
-    bottom:inherit;
-    background-color: red;
-    height: 150px;
-
-  }
-
   #myInput {
     resize: none;
     width: calc(100% - 10px);

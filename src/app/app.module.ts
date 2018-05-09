@@ -48,6 +48,7 @@ import { FileServiceProvider } from '../providers/file-service/file-service';
 import { DecodeServiceProvider } from '../providers/decode-service/decode-service';
 import { EncodeServiceProvider } from '../providers/encode-service/encode-service';
 import { PhotoServiceProvider } from '../providers/photo-service/photo-service';
+import { CanvasServiceProvider } from '../providers/canvas-service/canvas-service';
 
 @NgModule({
     declarations: [
@@ -118,7 +119,8 @@ import { PhotoServiceProvider } from '../providers/photo-service/photo-service';
         FileServiceProvider,
         DecodeServiceProvider,
         EncodeServiceProvider,
-        PhotoServiceProvider
+        PhotoServiceProvider,
+    CanvasServiceProvider
     ]
 })
 

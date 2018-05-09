@@ -1,10 +1,10 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { NavController } from 'ionic-angular';
 import { IonicPage } from 'ionic-angular';
 import { EncodeProvider } from "../../../providers/encode/encode";
 import { Base64ToGallery } from "@ionic-native/base64-to-gallery";
-import {File} from "@ionic-native/file";
-import {Storage} from "@ionic/storage";
+import { File } from "@ionic-native/file";
+import { Storage } from "@ionic/storage";
+import { DecodeServiceProvider } from "../../../providers/decode-service/decode-service";
 
 declare var cordova: any;
 
@@ -28,9 +28,9 @@ export class DecodePhotoPage {
 
 
     constructor(
+        public decodeService: DecodeServiceProvider,
         private file: File,
         public encode: EncodeProvider,
-        public navCtrl: NavController,
         private base64ToGallery: Base64ToGallery,
         private storage: Storage)
     {
@@ -113,81 +113,8 @@ export class DecodePhotoPage {
     }
 
     save(){
-        var myBaseString = this.img;
-
-        // Split the base64 string in data and contentType
-        var block = myBaseString.split(";");
-
-        // Get the content type
-        var dataType = block[0].split(":")[1];
-
-        // get the real base64 content of the file
-        var realData = block[1].split(",")[1];
-
-        // The path where the file will be created
-        var folderpath = this.file.externalRootDirectory + 'DarkCrypt/';
-
-        // The name of your file, note that you need to know if is .png,.jpeg etc
-        var filename = 'img_'+ this.random() +'.' + this.extension;
-
-        this.savebase64AsImageFile(folderpath,filename,realData,dataType);
+        this.decodeService.decode(this.img)
     }
-
-    /**
-     * Convert a base64 string in a Blob according to the data and contentType.
-     *
-     * @param b64Data {String} Pure base64 string without contentType
-     * @param contentType {String} the content type of the file i.e (image/jpeg - image/png - text/plain)
-     * @param sliceSize {Int} SliceSize to process the byteCharacters
-     * @see http://stackoverflow.com/questions/16245767/creating-a-blob-from-a-base64-string-in-javascript
-     * @return Blob
-     */
-    b64toBlob(b64Data, contentType = '', sliceSize = 512) {
-
-        var byteCharacters = atob(b64Data);
-        var byteArrays = [];
-
-        for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-            var slice = byteCharacters.slice(offset, offset + sliceSize);
-
-            var byteNumbers = new Array(slice.length);
-            for (var i = 0; i < slice.length; i++) {
-                byteNumbers[i] = slice.charCodeAt(i);
-            }
-
-            var byteArray = new Uint8Array(byteNumbers);
-
-            byteArrays.push(byteArray);
-        }
-
-        var blob = new Blob(byteArrays, {type: contentType});
-        return blob;
-    }
-
-    /**
-     * Create a Image file according to its database64 content only.
-     *
-     * @param folderpath {String} The folder where the file will be created
-     * @param filename {String} The name of the file that will be created
-     * @param content {Base64 String} Important : The content can't contain the following string (data:image/png[or any other format];base64,). Only the base64 string is expected.
-     */
-    savebase64AsImageFile(folderpath,filename,content,contentType){
-
-        // Convert the base64 string in a Blob
-        var DataBlob = this.b64toBlob(content,contentType);
-
-        let self = this;
-        this.file.resolveDirectoryUrl(folderpath).then((path)=>{
-            self.file.getFile(path,filename,{create:true}).then(file => {
-                file.createWriter(function(fileWriter) {
-                    fileWriter.write(DataBlob);
-                }, function(){
-                    alert('Unable to save file in path '+ folderpath);
-                });
-            })
-        });
-    }
-
 
     random(): number {
         let rand = Math.floor(Math.random()*255)+1;

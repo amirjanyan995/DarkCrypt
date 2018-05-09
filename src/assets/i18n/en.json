@@ -2,6 +2,7 @@
   "home": "Home",
   "encode_text": "Encode text",
   "decode_text": "Decode text",
+  "decoded_text": "Decoded text",
   "settings": "Settings",
   "settings_list": "Settings List",
   "exit": "Exit",
@@ -15,11 +16,16 @@
   "password": "Password:",
   "clear": "Clear",
   "past": "Past",
+  "copy": "Copy",
+  "save": "Save",
+  "copy_message": "Text copied to clipboard",
+  "save_message": "Text saved to:",
   "photo": "Photo",
   "text": "Text",
   "review": "Review",
   "character" : "Characters type:",
   "message": "Message",
   "encode_text_message": "Please enter the text to encode.",
-  "file_name_message": "Please enter the output file name."
+  "file_name_message": "Please enter the output file name.",
+  "empty_text": "Text is empty"
 }

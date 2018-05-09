@@ -1,34 +1,40 @@
 <ion-content style="max-height:100vh;">
-    <ion-card>
+    <ion-card [class.marg]="!decodeService.lastImage">
         <ion-card-content>
-            <img [src]="img" (click)="encode.showImg()"/>
+            <img [src]="decodeService.pathToImage" (click)="decodeService.showImg()" />
             <canvas #canvas style="display: none"></canvas>
         </ion-card-content>
-        <ion-item *ngIf="encode.lastImage">
-            <button ion-button color="dark" clear item-start *ngIf="encode.lastImage" (click)="clearCanvas()">
+        <ion-item *ngIf="decodeService.lastImage">
+            <button ion-button color="dark" clear item-start  (click)="decodeService.removePhoto()">
                 <ion-icon name="trash"></ion-icon>
             </button>
-            <button ion-button color="dark" clear item-end *ngIf="encode.lastImage">
+            <button ion-button color="dark" clear item-end (click)="decodeService.showInformation()">
                 <ion-icon name="information-circle"></ion-icon>
             </button>
         </ion-item>
     </ion-card>
-    <ion-grid>
-        <ion-row>
-            <ion-input placeholder="text" [(ngModel)]="text"></ion-input>
-        </ion-row>
-        <ion-row>
-            <button ion-button (click)="aaa()">Draw</button>
-            <button ion-button (click)="clearCanvas()">Clear</button>
-            <button ion-button (click)="save()">Save</button>
-        </ion-row>
-    </ion-grid>
-</ion-content>
-<ion-footer *ngIf="!encode.lastImage">
-    <div text-center class="footer-button-group">
-        <button ion-button round icon-left icon-start (click)="encode.takePhoto(encode.camera.PictureSourceType.PHOTOLIBRARY)">
+    <!--<ion-grid>-->
+        <!--<ion-row>-->
+            <!--<ion-input placeholder="text" [(ngModel)]="text"></ion-input>-->
+        <!--</ion-row>-->
+        <!--<ion-row>-->
+            <!--<button ion-button (click)="aaa()">Draw</button>-->
+            <!--<button ion-button (click)="clearCanvas()">Clear</button>-->
+            <!--<button ion-button (click)="save()">Save</button>-->
+        <!--</ion-row>-->
+    <!--</ion-grid>-->
+    <div text-center *ngIf="!decodeService.lastImage"  class="btn-wrapper">
+        <button ion-button outline icon-left icon-start (click)="decodeService.takePhoto(encode.camera.PictureSourceType.PHOTOLIBRARY)">
             <ion-icon ios="ios-images" md="md-images"></ion-icon>
             <span translate>gallery</span>
         </button>
+        <button ion-button outline icon-left icon-end
+                (click)="decodeService.decode()"
+                [disabled]="!decodeService.lastImage">
+            <ion-icon ios="ios-unlock" md="md-unlock"></ion-icon>
+            <span translate>decode_text</span>
+        </button>
     </div>
-</ion-footer>
+</ion-content>
+
+
