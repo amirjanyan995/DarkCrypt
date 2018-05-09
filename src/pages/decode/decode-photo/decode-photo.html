@@ -23,7 +23,7 @@
             <!--<button ion-button (click)="save()">Save</button>-->
         <!--</ion-row>-->
     <!--</ion-grid>-->
-    <div text-center *ngIf="!decodeService.lastImage"  class="btn-wrapper">
+    <div text-center class="btn-wrapper">
         <button ion-button outline icon-left icon-start (click)="decodeService.takePhoto(encode.camera.PictureSourceType.PHOTOLIBRARY)">
             <ion-icon ios="ios-images" md="md-images"></ion-icon>
             <span translate>gallery</span>

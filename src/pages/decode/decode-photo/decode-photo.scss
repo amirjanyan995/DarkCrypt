@@ -2,4 +2,34 @@ page-decode-photo {
   #canvas {
     display: none;
   }
+  ion-card-content {
+    background-color: #F4F5F8;
+  }
+
+  ion-card-content .card-content-md {
+    padding: 1px 1px !important;
+  }
+
+  ion-card img {
+    max-height: 65vh;
+    width: auto;
+    display: block;
+    margin: 0 auto;
+  }
+
+  .hide {
+    display: none;
+  }
+
+  .marg {
+    margin-top: 5vh;
+  }
+  @media screen and (orientation:landscape) {
+    ion-card img {
+      max-height: 53vh;
+    }
+    .marg {
+      margin-top: 1vh;
+    }
+  }
 }

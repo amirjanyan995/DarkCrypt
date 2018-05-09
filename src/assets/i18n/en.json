@@ -27,5 +27,6 @@
   "message": "Message",
   "encode_text_message": "Please enter the text to encode.",
   "file_name_message": "Please enter the output file name.",
-  "empty_text": "Text is empty"
+  "empty_text": "Text is empty",
+  "please_wait": "Please wait."
 }

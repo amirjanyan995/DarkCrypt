@@ -157,6 +157,28 @@ export class FileServiceProvider {
     }
 
     /**
+     * Create file and write decoded message:
+     * @param {string} message
+     * @param {string} name
+     * @returns {Promise<any>}
+     */
+    public saveAsTxt(message:string, name:string) {
+        let self = this;
+        return new Promise((resolve, reject) => {
+            self.checkAndCreateDir(self.file.externalRootDirectory, Const.FOLDER_NAME).then(dir => {
+                self.file.resolveDirectoryUrl(dir.toString()).then((path)=>{
+                    self.file.getFile(path,name + '.txt',{create:true}).then(file => {
+                        file.createWriter(function(fileWriter) {
+                            fileWriter.write(message);
+                            resolve(file.fullPath);
+                        });
+                    })
+                });
+            })
+        });
+    }
+
+    /**
      * Save Image
      * Convert img base64 code to img
      * @param {string} base64
@@ -245,7 +267,7 @@ export class FileServiceProvider {
             this.extension = extension;
         });
         this.storage.get(Const.CHARACTER_TYPE).then(type => {
-           this.characterType = type;
+            this.characterType = type;
         });
     }
 }

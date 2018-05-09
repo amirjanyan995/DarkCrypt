@@ -16,6 +16,8 @@ export class DecodeServiceProvider {
     private lastPath:any = null;
     public message:string;
 
+    private pleaseWait:string;
+
     constructor(
         public toastCtrl: ToastController,
         private camera:Camera,
@@ -27,7 +29,9 @@ export class DecodeServiceProvider {
         private fileService:FileServiceProvider,
         private loadCtrl:LoadingController
     ) {
-
+        this.translate.get('please_wait').subscribe(value => {
+            this.pleaseWait = value;
+        })
     }
     /**
      * Take Photo
@@ -124,11 +128,22 @@ export class DecodeServiceProvider {
     /**
      * Save decoded text
      */
-    public save(){
-        console.log('save');
-        this.translate.get('save_message').subscribe(value => {
-            //TODO saved path:
-            this.presentToast(value, 'bottom')
+    public saveDecodedText(){
+        let loading = this.loadCtrl.create({
+            content: this.pleaseWait
+        });
+
+        loading.present();
+
+        let name = this.lastImage.split('.')[0];
+        let self = this;
+        this.fileService.saveAsTxt(this.message,name).then(dir => {
+            loading.dismiss();
+            self.translate.get('save_message').subscribe(value => {
+                self.presentToast(value + '  ' + dir, 'bottom')
+            });
+        }).catch(err => {
+            this.presentToast('Something went wrong.');
         });
     }
     /**
