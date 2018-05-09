@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { File } from "@ionic-native/file";
+import { Storage } from "@ionic/storage";
 import * as Const from '../../util/constants';
 
 declare var window;
@@ -7,7 +8,14 @@ declare var window;
 @Injectable()
 export class FileServiceProvider {
 
-    constructor(private file: File) {
+    private extension:string = null;
+    private characterType:string = null;
+
+    constructor(
+        private file: File,
+        public storage: Storage)
+    {
+        this.updateStorage();
     }
 
     /**
@@ -41,8 +49,11 @@ export class FileServiceProvider {
      * @param newPathName   - New path name.
      * @param newFileName   - New file name.
      */
-    public copyFileToDir(pathName, fileName, newPathName, newFileName) {
+    public copyFileToDir(pathName, fileName, newPathName, newFileName = null) {
         let self = this;
+        // check name and create new name
+        newFileName = ( newFileName === null ) ? this.createTempFileName() : newFileName + '.' + this.extension;
+
         let promise = new Promise((resolve, reject) => {
             self.file.copyFile(pathName, fileName, newPathName , newFileName).then(success => {
                 resolve(newPathName + newFileName);
@@ -59,10 +70,9 @@ export class FileServiceProvider {
      * @param fileName - File name
      * @param newFileName - New file name
      */
-    public copyFileToProjectDir(pathName, fileName, newFileName){
+    public copyFileToProjectDir(pathName, fileName, newFileName = null){
         let self = this;
         let promise = new Promise((resolve, reject) => {
-            let projectDirPath = self.file.externalRootDirectory + Const.FOLDER_NAME + '/';
             self.checkAndCreateDir(self.file.externalRootDirectory, Const.FOLDER_NAME).then(dir => {
                 self.copyFileToDir(pathName, fileName, dir ,newFileName).then(dir => {
                     resolve(dir)
@@ -82,7 +92,7 @@ export class FileServiceProvider {
      * @param fileName - File name
      * @param newFileName - New file name
      */
-    public copyFileToAppCacheDir(pathName, fileName, newFileName){
+    public copyFileToAppCacheDir(pathName, fileName, newFileName = null){
         let self = this;
         let promise = new Promise((resolve, reject) => {
             self.copyFileToDir(pathName, fileName, this.file.externalCacheDirectory ,newFileName).then(dir => {
@@ -133,4 +143,25 @@ export class FileServiceProvider {
         })
     }
 
+    /**
+     *  Create a new name for the image
+     * @returns {string}
+     */
+    public createTempFileName(extension = true) {
+        var d = new Date(),
+            newFileName = d.getTime().toString();
+
+        newFileName += (extension) ? '.' + (this.extension || 'jpg') : '';
+
+        return newFileName;
+    }
+
+    public updateStorage(){
+        this.storage.get(Const.EXTENSION).then(extension => {
+            this.extension = extension;
+        });
+        this.storage.get(Const.CHARACTER_TYPE).then(type => {
+           this.characterType = type;
+        });
+    }
 }

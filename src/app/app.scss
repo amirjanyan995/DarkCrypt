@@ -9,7 +9,9 @@
   width: 100%;
   text-align:center;
 }
-
+.toast-message{
+  text-align: center !important;
+}
 .fixed-top{
   position: absolute;
   top: 5px;
@@ -77,9 +79,6 @@
     .alert-message{
       color: white;
     }
-    //.alert-button-group{
-    //  display: none;
-    //}
   }
 }
 

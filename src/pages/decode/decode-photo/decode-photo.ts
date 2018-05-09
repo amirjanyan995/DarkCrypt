@@ -19,11 +19,12 @@ export class DecodePhotoPage {
 
     //Reference Canvas object
     private _CANVAS  : any;
-    private img:string = 'assets/imgs/misc/img-icon.png';
-    private text:string = '';
-    private  extension:any;
     // Reference the context for the Canvas element
     private _CONTEXT : any;
+
+    private img:string = 'assets/imgs/misc/img-icon.png';
+    private text:string = '';
+    private extension:any;
 
 
     constructor(

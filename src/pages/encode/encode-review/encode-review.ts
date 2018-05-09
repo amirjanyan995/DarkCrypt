@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage } from 'ionic-angular';
-import { EncodeProvider } from "../../../providers/encode/encode";
+import {EncodeServiceProvider} from "../../../providers/encode-service/encode-service";
 
 @IonicPage()
 @Component({
@@ -9,8 +9,7 @@ import { EncodeProvider } from "../../../providers/encode/encode";
 })
 export class EncodeReviewPage {
 
-  constructor(public encode:EncodeProvider) {
+  constructor(public encodeService:EncodeServiceProvider) {
 
   }
-
 }

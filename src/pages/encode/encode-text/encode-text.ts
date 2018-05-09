@@ -1,9 +1,7 @@
-import {Component, ViewChild} from '@angular/core';
+import { Component, ViewChild} from '@angular/core';
 import { IonicPage } from 'ionic-angular';
-import { EncodeProvider } from "../../../providers/encode/encode";
-import {ElementRef} from '@angular/core';
-import { NavController } from "ionic-angular";
-import {Clipboard} from "@ionic-native/clipboard";
+import { ElementRef } from '@angular/core';
+import { EncodeServiceProvider } from "../../../providers/encode-service/encode-service";
 
 @IonicPage()
 @Component({
@@ -14,19 +12,7 @@ export class EncodeTextPage {
     @ViewChild('message') message: ElementRef;
 
     constructor(
-        public encode:EncodeProvider,
-        public nav: NavController,
-        public clipboard: Clipboard
+        public encodeService:EncodeServiceProvider
     ) {
-
-    }
-    // Past copyed text
-    public past() {
-        this.clipboard.paste().then(
-            (resolve: string) => {
-                this.encode.message += resolve;
-            },
-            (reject: string) => {}
-        );
     }
 }

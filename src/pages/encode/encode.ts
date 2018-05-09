@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController } from 'ionic-angular';
-import { ActionSheetController, ToastController, Platform, LoadingController } from 'ionic-angular';
+import { IonicPage } from 'ionic-angular';
+import { ToastController, Platform } from 'ionic-angular';
 import { ImagePicker } from "@ionic-native/image-picker";
 import { Clipboard } from '@ionic-native/clipboard';
 import { ScreenOrientation } from "@ionic-native/screen-orientation";
@@ -20,6 +20,7 @@ import { Camera } from "@ionic-native/camera";
 import { Content } from "ionic-angular";
 import { ElementRef } from "@angular/core";
 import { Storage } from "@ionic/storage";
+import {EncodeServiceProvider} from "../../providers/encode-service/encode-service";
 
 declare var cordova: any;
 
@@ -38,18 +39,15 @@ export class EncodePage {
 
     private lastImage:any = null;
     private message:string;
-    private outputFileName: string;
-    private password: string;
 
     constructor(
-        public navCtrl: NavController,
+        public encodeService: EncodeServiceProvider,
         private superTabsCtrl: SuperTabsController,
         public encode: EncodeProvider,
         private camera: Camera,
         private transfer: Transfer,
         private file: File,
         private filePath: FilePath,
-        public actionSheetCtrl: ActionSheetController,
         public toastCtrl: ToastController,
         public platform: Platform,
         private imagePicker: ImagePicker,
@@ -62,6 +60,10 @@ export class EncodePage {
             this.superTabsCtrl.showToolbar(!this.screen.type.startsWith('landscape'))
         });
         this.superTabsCtrl.showToolbar(!this.screen.type.startsWith('landscape'));
+    }
+
+    ionViewDidEnter(){
+        this.encodeService.update();
     }
 
     resize() {
@@ -170,15 +172,6 @@ export class EncodePage {
         toast.present();
     }
 
-    // // Always get the accurate path to your project created folder
-    // public pathForProjectImage(img) {
-    //     return img === null ? 'assets/imgs/misc/img-icon.png' : this.file.externalRootDirectory + this.folderName + '/' + img;
-    // }
-    //
-    // // Always get the accurate path to your apps folder
-    // public pathForCacheImage(img) {
-    //     return img === null ? 'assets/imgs/misc/img-icon.png' : this.file.dataDirectory + '/' + img;
-    // }
 
     // /**
     //  *  Encode

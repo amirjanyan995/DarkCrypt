@@ -2,22 +2,20 @@
     <ion-list>
         <ion-item>
             <ion-label color="primary" floating>
-                <span translate>password</span>
-            </ion-label>
-            <ion-input [(ngModel)]="encode.password"></ion-input>
-        </ion-item>
-
-        <ion-item>
-            <ion-label color="primary" floating>
                 <span translate>output_name</span>
             </ion-label>
-            <ion-input [(ngModel)]="encode.outputName"></ion-input>
+            <ion-input [(ngModel)]="encodeService.outputFileName"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label color="primary" floating>
+                <span translate>password</span>
+            </ion-label>
+            <ion-input [(ngModel)]="encodeService.password"></ion-input>
         </ion-item>
     </ion-list>
     <div text-center class="btn-wrapper">
-        <button ion-button outline icon-left [disabled]="!encode.lastImage">
+        <button ion-button outline icon-left [disabled]="!encodeService.lastImage" (click)="encodeService.encode()">
             <span translate>encode</span>
         </button>
     </div>
 </ion-content>
-<!--(click)="encode()" [disabled]="!lastImage"-->

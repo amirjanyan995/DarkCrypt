@@ -3,15 +3,15 @@
         <ion-label color="primary" floating>
             <span translate>message</span>
         </ion-label>
-        <ion-textarea [(ngModel)]="encode.message"></ion-textarea>
+        <ion-textarea [(ngModel)]="encodeService.message"></ion-textarea>
     </ion-item>
     <div text-center class="btn-wrapper">
-        <button ion-button outline icon-left icon-start (click)="past()">
+        <button ion-button outline icon-left icon-start (click)="encodeService.past()">
             <ion-icon ios="ios-clipboard" md="md-clipboard"></ion-icon>
             <span translate>past</span>
         </button>
 
-        <button ion-button outline icon-left icon-end (click)="encode.message = ''">
+        <button ion-button outline icon-left icon-end (click)="encodeService.message = ''">
             <ion-icon ios="ios-trash" md="md-trash"></ion-icon>
             <span translate>clear</span>
         </button>

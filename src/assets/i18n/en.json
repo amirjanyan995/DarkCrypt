@@ -19,5 +19,7 @@
   "text": "Text",
   "review": "Review",
   "character" : "Characters type:",
-  "message": "Message"
+  "message": "Message",
+  "encode_text_message": "Please enter the text to encode.",
+  "file_name_message": "Please enter the output file name."
 }
