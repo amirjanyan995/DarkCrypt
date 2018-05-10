@@ -17,14 +17,6 @@
         </ion-item>
         <ion-item>
             <ion-label>
-                <span translate>output_extension</span>
-            </ion-label>
-            <ion-select [(ngModel)]="extension" (ionChange)="selectExtension()">
-                <ion-option *ngFor="let extension of extensions" value="{{ extension.value }}">{{ extension.name }}</ion-option>
-            </ion-select>
-        </ion-item>
-        <ion-item>
-            <ion-label>
                 <span translate>character</span>
             </ion-label>
             <ion-select [(ngModel)]="characterType" (ionChange)="selectCharacterType()">

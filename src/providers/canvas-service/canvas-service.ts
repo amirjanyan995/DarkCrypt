@@ -49,8 +49,6 @@ export class CanvasServiceProvider {
         var imgd = this._CONTEXT.getImageData(0, 0, this._CANVAS.width, this._CANVAS.height);
 
         return imgd;
-
-        // context.putImageData(imgd, x, y);
     }
 
     public decode(){
@@ -59,31 +57,30 @@ export class CanvasServiceProvider {
         var i,j;
         let arr = [];
         let count =0;
-        for (i = 0,j=0; i < 200; i += 4,j+=3) {
+        for (i = 0,j=0; i < pix.length; i += 4,j+=3) {
             let a = this.getLast(pix[i]);
             if(!this.binToDec(a)) {
                 count++;
-                if(count >=9)break;
+                if(count >8)break;
             }else count=0
             arr.push(a);
 
             a = this.getLast(pix[i+1]);
             if(!this.binToDec(a)) {
                 count++;
-                if(count >=9)break;
+                if(count >8)break;
             }else count=0
             arr.push(a)
 
             a = this.getLast(pix[i+2]);
             if(!this.binToDec(a)) {
                 count++;
-                if(count >=9)break;
+                if(count >8)break;
             }else count=0
 
             arr.push(a)
-            console.log('R-'+ pix[i] +' G-' + pix[i+1] +' B-' + pix[i+2]);
         }
-        arr = arr.splice(0,arr.length-9,)
+        arr = arr.splice(0,arr.length-8,)
         let text:string='';
         for(i=0;i<arr.length;i+=4){
             let code = arr[i]+arr[i+1]+arr[i+2]+arr[i+3];
@@ -96,28 +93,17 @@ export class CanvasServiceProvider {
         return code.slice(code.length-2,code.length);
     }
 
-    public encode(message:string, extension:string){
+    public encode(message:string){
         let arr = this.textToArray(message);
         var data = this._CONTEXT.getImageData(0, 0, this._CANVAS.width, this._CANVAS.height);
-
         var pix = data.data;
-        var i,j;
-        for (i = 0,j=0; i < pix.length && j<arr.length; i += 4,j+=3) {
+        for (let i = 0,j=0; i < pix.length && j<arr.length; i += 4,j+=3) {
             pix[i  ] = this.replace(pix[i],arr[j]);
             pix[i+1] = this.replace(pix[i+1],arr[j+1]);
             pix[i+2] = this.replace(pix[i+2],arr[j+2]);
-            console.log('R-'+ pix[i] +' G-' + pix[i+1] +' B-' + pix[i+2]);
         }
-        i-=4;
-        for(j=0; j<3; j++){
-            pix[i  ] = this.replace(pix[i],'00');
-            pix[i+1] = this.replace(pix[i+1],'00');
-            pix[i+2] = this.replace(pix[i+2],'00');
-            i+=4;
-        }
-        console.log('--------------------------')
         this._CONTEXT.putImageData(data, 0, 0);
-        return this.getDataURL(extension);
+        return this.getDataURL();
     }
 
     private replace(num:number, sub:string){
@@ -136,6 +122,7 @@ export class CanvasServiceProvider {
                 arr.push(code.slice(j,j+length));
             }
         }
+        for(let i=0; i< 8; i++){arr.push('00')}
         return arr;
     }
 
@@ -178,8 +165,8 @@ export class CanvasServiceProvider {
      * Get image Base64 code
      * @returns {any}
      */
-    public getDataURL(extension:string){
-        return this._CANVAS.toDataURL(extension);
+    public getDataURL(){
+        return this._CANVAS.toDataURL();
     }
 
     clearCanvas()

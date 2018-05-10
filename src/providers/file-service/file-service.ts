@@ -8,7 +8,6 @@ declare var window;
 @Injectable()
 export class FileServiceProvider {
 
-    private extension:string = null;
     private characterType:string = null;
 
     constructor(
@@ -52,7 +51,7 @@ export class FileServiceProvider {
     public copyFileToDir(pathName, fileName, newPathName, newFileName = null) {
         let self = this;
         // check name and create new name
-        newFileName = ( newFileName === null ) ? this.createTempFileName() : newFileName + '.' + this.extension;
+        newFileName = ( newFileName === null ) ? this.createTempFileName() : newFileName + '.png';
 
         let promise = new Promise((resolve, reject) => {
             self.file.copyFile(pathName, fileName, newPathName , newFileName).then(success => {
@@ -147,12 +146,11 @@ export class FileServiceProvider {
      *  Create a new name for the image
      * @returns {string}
      */
-    public createTempFileName(extension = true) {
+    public createTempFileName() {
         var d = new Date(),
-            newFileName = d.getTime().toString();
+            name = d.getTime().toString();
 
-        newFileName += (extension) ? '.' + (this.extension || 'jpg') : '';
-
+        var newFileName = name + '.png';
         return newFileName;
     }
 
@@ -199,7 +197,7 @@ export class FileServiceProvider {
         var folderpath = this.file.externalRootDirectory + 'DarkCrypt/';
 
         // The name of your file, note that you need to know if is .png,.jpeg etc
-        var filename = fileName + '.' + this.extension;
+        var filename = fileName + '.png';
 
         this.savebase64AsImageFile(folderpath,filename,realData,dataType);
     }
@@ -263,9 +261,6 @@ export class FileServiceProvider {
      * Update existing data
      */
     public updateStorage(){
-        this.storage.get(Const.EXTENSION).then(extension => {
-            this.extension = extension;
-        });
         this.storage.get(Const.CHARACTER_TYPE).then(type => {
             this.characterType = type;
         });

@@ -18,8 +18,6 @@ export class DecodeServiceProvider {
     private lastPath:any = null;
     public message:string;
 
-    private extension:string;
-
     private pleaseWait:string;
 
     constructor(
@@ -159,10 +157,6 @@ export class DecodeServiceProvider {
 
         // update data received form storage.
         this.fileService.updateStorage();
-
-        this.storage.get(Const.EXTENSION).then(extension => {
-            this.extension = extension;
-        });
 
         // remove selected image
         if(this.lastPath != null && this.lastImage != null) {

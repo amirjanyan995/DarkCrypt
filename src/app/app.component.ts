@@ -62,7 +62,7 @@ export class MyApp {
         // extension
         this.storage.get(Const.EXTENSION).then((extension) => {
             if(extension == null) {
-                this.storage.set(Const.EXTENSION, Const.JPG);
+                this.storage.set(Const.EXTENSION, Const.PNG);
             }
         });
 

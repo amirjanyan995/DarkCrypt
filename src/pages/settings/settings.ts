@@ -1,5 +1,5 @@
 import {Component, ViewChild} from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage } from 'ionic-angular';
 import { List } from "ionic-angular";
 
 import { Storage } from '@ionic/storage';
@@ -16,14 +16,11 @@ export class SettingsPage {
     @ViewChild(List) list: List;
 
     private language:string;
-    private extension:string;
+    // private extension:string;
     private characterType:string;
 
     // Project languages
     private languages: Array<{value: string, name: string}>;
-
-    // Output file extensions
-    private extensions: Array<{value: string, name: string}>;
 
     // Characters type
     private charactersType: Array<{value: string, name: string}>;
@@ -42,15 +39,6 @@ export class SettingsPage {
             },{
                 value: Const.AM,
                 name: Const.AM_NAME
-            }];
-
-        this.extensions = [
-            {
-                value: Const.JPG,
-                name: Const.JPG_NAME
-            },{
-                value: Const.PNG,
-                name: Const.PNG_NAME
             }];
 
         this.charactersType = [
@@ -77,10 +65,10 @@ export class SettingsPage {
         });
 
         // set output file extension
-        this.storage.get( Const.EXTENSION ).then((extension) => {
-            this.storage.set( Const.EXTENSION, extension);
-            this.extension = extension
-        });
+        // this.storage.get( Const.EXTENSION ).then((extension) => {
+        //     this.storage.set( Const.EXTENSION, extension);
+        //     this.extension = extension
+        // });
 
         // set characters type
         this.storage.get(Const.CHARACTER_TYPE).then((type) => {
@@ -98,12 +86,12 @@ export class SettingsPage {
 
     }
 
-    /**
-     * Select output file extension
-     */
-    selectExtension(){
-        this.storage.set(Const.EXTENSION, this.extension);
-    }
+    // /**
+    //  * Select output file extension
+    //  */
+    // selectExtension(){
+    //     this.storage.set(Const.EXTENSION, this.extension);
+    // }
 
     /**
      * Set characters type
