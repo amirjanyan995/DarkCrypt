@@ -13,18 +13,8 @@
             </button>
         </ion-item>
     </ion-card>
-    <!--<ion-grid>-->
-        <!--<ion-row>-->
-            <!--<ion-input placeholder="text" [(ngModel)]="text"></ion-input>-->
-        <!--</ion-row>-->
-        <!--<ion-row>-->
-            <!--<button ion-button (click)="aaa()">Draw</button>-->
-            <!--<button ion-button (click)="clearCanvas()">Clear</button>-->
-            <!--<button ion-button (click)="save()">Save</button>-->
-        <!--</ion-row>-->
-    <!--</ion-grid>-->
     <div text-center class="btn-wrapper">
-        <button ion-button outline icon-left icon-start (click)="decodeService.takePhoto(encode.camera.PictureSourceType.PHOTOLIBRARY)">
+        <button ion-button outline icon-left icon-start (click)="decodeService.takePhoto()">
             <ion-icon ios="ios-images" md="md-images"></ion-icon>
             <span translate>gallery</span>
         </button>

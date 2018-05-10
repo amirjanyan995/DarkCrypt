@@ -183,7 +183,7 @@ export class FileServiceProvider {
      * Convert img base64 code to img
      * @param {string} base64
      */
-    public saveImage(base64:string){
+    public saveImage(base64:string,fileName:string){
         var myBaseString = base64;
 
         // Split the base64 string in data and contentType
@@ -199,7 +199,7 @@ export class FileServiceProvider {
         var folderpath = this.file.externalRootDirectory + 'DarkCrypt/';
 
         // The name of your file, note that you need to know if is .png,.jpeg etc
-        var filename = 'img_aaaaa.' + this.extension;
+        var filename = fileName + '.' + this.extension;
 
         this.savebase64AsImageFile(folderpath,filename,realData,dataType);
     }

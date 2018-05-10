@@ -2,6 +2,7 @@
     <ion-card [class.marg]="!encodeService.lastImage">
         <ion-card-content>
             <img [src]="encodeService.pathToImage" (click)="encodeService.showImg()" />
+            <canvas #canvas style="display: none"></canvas>
         </ion-card-content>
         <ion-item *ngIf="encodeService.lastImage">
             <button ion-button color="dark" clear item-start  (click)="encodeService.removePhoto()">

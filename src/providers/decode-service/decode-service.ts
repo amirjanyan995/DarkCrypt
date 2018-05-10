@@ -8,6 +8,8 @@ import {TranslateService} from "@ngx-translate/core";
 import {FileServiceProvider} from "../file-service/file-service";
 import {PhotoViewer} from "@ionic-native/photo-viewer";
 import * as Const from "../../util/constants";
+import {CanvasServiceProvider} from "../canvas-service/canvas-service";
+import {Storage} from "@ionic/storage";
 
 @Injectable()
 export class DecodeServiceProvider {
@@ -16,15 +18,19 @@ export class DecodeServiceProvider {
     private lastPath:any = null;
     public message:string;
 
+    private extension:string;
+
     private pleaseWait:string;
 
     constructor(
+        public canvasService: CanvasServiceProvider,
         public toastCtrl: ToastController,
+        public translate: TranslateService,
+        public clipboard: Clipboard,
+        public storage: Storage,
         private camera:Camera,
         private photoService: PhotoServiceProvider,
-        public translate: TranslateService,
         private superTabsCtrl: SuperTabsController,
-        public clipboard: Clipboard,
         private photoViewer: PhotoViewer,
         private fileService:FileServiceProvider,
         private loadCtrl:LoadingController
@@ -44,6 +50,7 @@ export class DecodeServiceProvider {
         this.photoService.takePhotoFromGallery().then( data => {
             this.lastImage = data[0].name
             this.lastPath = data[0].path
+            this.canvasService.drawImg(this.lastPath + this.lastImage)
         }).catch(err => {
             console.log(err);
             this.presentToast('Something went wrong.');
@@ -57,6 +64,7 @@ export class DecodeServiceProvider {
         this.fileService.removeFile(this.lastPath,this.lastImage).catch(err => {
             this.presentToast('The image couldn\'t be deleted')
         })
+        this.canvasService.clearCanvas();
         this.lastImage = null;
         this.lastPath = null;
     }
@@ -64,7 +72,7 @@ export class DecodeServiceProvider {
     /**
      * Decode Image
      */
-    public decode(base64:string = null){
+    public decode(){
         let loading = this.loadCtrl.create({
             content: 'Decoding text...'
         });
@@ -73,13 +81,10 @@ export class DecodeServiceProvider {
 
         setTimeout(() => {
             loading.dismiss();
-        },3000);
+        },4000);
 
-
-        if(base64 != null) {
-            this.fileService.saveImage(base64)
-        }
-        // this.fileService.copyFileToProjectDir(this.lastPath,this.lastImage, this.outputFileName)
+        this.message = this.canvasService.decode();
+        this.superTabsCtrl.slideTo('decodeTextTab');
     }
 
     /**
@@ -154,6 +159,10 @@ export class DecodeServiceProvider {
 
         // update data received form storage.
         this.fileService.updateStorage();
+
+        this.storage.get(Const.EXTENSION).then(extension => {
+            this.extension = extension;
+        });
 
         // remove selected image
         if(this.lastPath != null && this.lastImage != null) {

@@ -64,7 +64,7 @@ export class EncodePage {
 
     ionViewDidEnter(){
         this.encodeService.update();
-        this.superTabsCtrl.showToolbar(!this.screen.type.startsWith('landscape'));
+        // this.superTabsCtrl.showToolbar(!this.screen.type.startsWith('landscape'));
     }
 
     resize() {
