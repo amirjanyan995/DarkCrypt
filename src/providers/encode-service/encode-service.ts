@@ -4,7 +4,7 @@ import { PhotoServiceProvider } from "../photo-service/photo-service";
 import { FileServiceProvider } from "../file-service/file-service";
 import { PhotoViewer } from "@ionic-native/photo-viewer";
 import * as Const from '../../util/constants';
-import {LoadingController, ToastController} from "ionic-angular";
+import {AlertController, LoadingController, ToastController} from "ionic-angular";
 import { Clipboard } from "@ionic-native/clipboard";
 import {SuperTabsController} from "ionic2-super-tabs";
 import {TranslateService} from "@ngx-translate/core";
@@ -13,13 +13,17 @@ import {Storage} from "@ionic/storage";
 
 @Injectable()
 export class EncodeServiceProvider {
+
     private lastImage:any = null;
     private lastPath:any = null;
     public message:string;
     public outputFileName:string;
     public password:string;
 
+    private tr = [];
+
     constructor(
+        public alertCtrl:AlertController,
         public translate: TranslateService,
         private superTabsCtrl: SuperTabsController,
         public toastCtrl: ToastController,
@@ -44,7 +48,6 @@ export class EncodeServiceProvider {
     public takePhoto(sourceType){
         if(sourceType === this.camera.PictureSourceType.CAMERA) {
             this.photoService.takePhotoFromCamera().then( data => {
-                // this.data = data;
                 this.lastImage = data[0].name
                 this.lastPath = data[0].path
                 this.canvasService.drawImg(this.lastPath + this.lastImage);
@@ -75,11 +78,42 @@ export class EncodeServiceProvider {
         this.lastImage = null;
         this.lastPath = null;
     }
+    /**
+     * Convert integer to binary
+     */
+    private decToBin(dec:number):string {
+        return (dec >>> 0).toString(2);
+    }
+    /**
+     * Convert binary to integer
+     */
+    private binToDec(bin:string):number {
+        return parseInt(bin, 2);
+    }
+    private fillToStart(bin:string){
+        let length = bin.length > 8 ? bin.length + (8 - (bin.length%8)) : 8;
+        for(let i=bin.length; i<length; i++){
+            bin = '0' + bin;
+        }
+        return bin;
+    }
 
+    private textToArray(text:string,length:number = 2){
+        let arr = [];
+        for(let i=0; i<text.length; i++){
+            let code = this.fillToStart(this.decToBin(text.charCodeAt(i)));
+            for(let j=0; j<code.length;j+=length){
+                arr.push(code.slice(j,j+length));
+            }
+        }
+        for(let i=0; i< 16; i++){arr.push('00')}
+        return arr;
+    }
     /**
      * Encode Image
      */
     public encode(){
+
         let loading = this.loadCtrl.create({
             content: 'Encoding text...'
         });
@@ -98,19 +132,38 @@ export class EncodeServiceProvider {
             return;
         }
 
-        for(let i=0;i<this.message.length;i++){
-            if(this.message.charCodeAt(i)>255){
-                this.presentToast('Only ABCD...');
-                return;
-            }
-        }
         loading.present();
+        this.canvasService.encode(this.message).then(data => {
+            setTimeout(()=>{
+                loading.dismiss();
+            },2000)
+            let base64code = data[0].data
+            this.fileService.saveImage(base64code,this.outputFileName).then(url => {
+                this.presentConfirm(url);
+            })
+        });
+    }
 
-        setTimeout(() => {
-            loading.dismiss();
-        },2000);
-        let base64code = this.canvasService.encode(this.message);
-        this.fileService.saveImage(base64code,this.outputFileName)
+    private presentConfirm(path:any) {
+        this.translate.get(['photo_save_message','start_over','cancel']).subscribe(value => {
+            let alert = this.alertCtrl.create({
+                message: value['photo_save_message'] + path,
+                buttons: [
+                    {
+                        text: value['start_over'],
+                        handler: () => {
+                            this.update();
+                            this.superTabsCtrl.slideTo('encodePhotoTab');
+                        }
+                    },
+                    {
+                        text: value['cancel'],
+                        role: 'cancel'
+                    }
+                ]
+            });
+            alert.present();
+        });
     }
 
     /**
@@ -171,7 +224,7 @@ export class EncodeServiceProvider {
 
         // update data received form storage.
         this.fileService.updateStorage();
-
+        this.canvasService.clearCanvas();
         // remove selected image
         if(this.lastPath != null && this.lastImage != null) {
             this.removePhoto();

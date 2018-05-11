@@ -28,5 +28,8 @@
   "encode_text_message": "Введите текст для кодирования.",
   "file_name_message": "Введите имя выходного файла.",
   "empty_text": "Текст пуст",
-  "please_wait": "Пожалуйста подождите."
+  "please_wait": "Пожалуйста подождите.",
+  "photo_save_message": "Фото сохранен в:",
+  "start_over": "Начать сначала",
+  "cancel": "Отмена"
 }

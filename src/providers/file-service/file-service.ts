@@ -182,24 +182,26 @@ export class FileServiceProvider {
      * @param {string} base64
      */
     public saveImage(base64:string,fileName:string){
-        var myBaseString = base64;
+        return new Promise((resolve, reject) => {
+            var myBaseString = base64;
 
-        // Split the base64 string in data and contentType
-        var block = myBaseString.split(";");
+            // Split the base64 string in data and contentType
+            var block = myBaseString.split(";");
 
-        // Get the content type
-        var dataType = block[0].split(":")[1];
+            // Get the content type
+            var dataType = block[0].split(":")[1];
 
-        // get the real base64 content of the file
-        var realData = block[1].split(",")[1];
+            // get the real base64 content of the file
+            var realData = block[1].split(",")[1];
 
-        // The path where the file will be created
-        var folderpath = this.file.externalRootDirectory + 'DarkCrypt/';
+            // The path where the file will be created
+            var folderpath = this.file.externalRootDirectory + 'DarkCrypt/';
 
-        // The name of your file, note that you need to know if is .png,.jpeg etc
-        var filename = fileName + '.png';
-
-        this.savebase64AsImageFile(folderpath,filename,realData,dataType);
+            // The name of your file, note that you need to know if is .png,.jpeg etc
+            var filename = fileName + '.png';
+            this.savebase64AsImageFile(folderpath,filename,realData,dataType);
+            resolve(folderpath+filename);
+        })
     }
 
     /**

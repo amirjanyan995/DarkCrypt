@@ -28,5 +28,8 @@
   "encode_text_message": "Please enter the text to encode.",
   "file_name_message": "Please enter the output file name.",
   "empty_text": "Text is empty",
-  "please_wait": "Please wait."
+  "please_wait": "Please wait.",
+  "photo_save_message": "Photo saved to:",
+  "start_over": "Start Over",
+  "cancel": "Cancel"
 }

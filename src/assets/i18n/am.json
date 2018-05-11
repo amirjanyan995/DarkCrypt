@@ -28,5 +28,8 @@
   "encode_text_message": "Լրացրեք թաքնագրվող տեքստը:",
   "file_name_message": "Լրացրեք ելքային ֆայլի անվանումը։",
   "empty_text": "Տեքստը դատարկ է",
-  "please_wait": "Խնդրում ենք սպասել"
+  "please_wait": "Խնդրում ենք սպասել",
+  "photo_save_message": "Նկարը պահպանվել է:",
+  "start_over": "Վերսկսել",
+  "cancel": "Չեղարկել"
 }
