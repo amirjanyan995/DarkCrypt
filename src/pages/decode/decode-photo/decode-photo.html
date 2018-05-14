@@ -19,8 +19,8 @@
             <span translate>gallery</span>
         </button>
         <button ion-button outline icon-left icon-end
-                (click)="decodeService.decode()">
-                <!--[disabled]="!decodeService.lastImage">-->
+                (click)="decodeService.decode()"
+                [disabled]="!decodeService.lastImage">
             <ion-icon ios="ios-unlock" md="md-unlock"></ion-icon>
             <span translate>decode_text</span>
         </button>
