@@ -55,13 +55,13 @@ export class CanvasServiceProvider {
      * Decode message
      * @returns {string}
      */
-    public decode(){
+    public decode(key:string){
         var data = this._CONTEXT.getImageData(0, 0, this._CANVAS.width, this._CANVAS.height);
         var pix = data.data;
         var i,j;
         let arr = [];
-        let count =0;
-        for (i = 0,j=0; i < pix.length; i += 4,j+=3) {
+        let count=0;
+        for (i = 12,j=0; i < pix.length; i += 4,j+=3) {
             let a = this.getLast(pix[i]);
             arr.push(a);
             if(!this.binToDec(a)) {
@@ -86,6 +86,7 @@ export class CanvasServiceProvider {
         }
         let text:string='';
         let symbols = [10]; // enter button
+        arr = arr.slice(0,arr.length - 16);
         for(let i=0; i < arr.length;i+=4){
             let code = arr[i]+arr[i+1]+arr[i+2]+arr[i+3];
             if(this.binToDec(code) < 32
@@ -96,6 +97,10 @@ export class CanvasServiceProvider {
                 code += arr[i]+arr[i+1]+arr[i+2]+arr[i+3];
             }
             text+=String.fromCharCode(this.binToDec(code));
+        }
+        if(key){
+            let newKey = this.generateKey(key);
+            text = this.deCrypt(text,newKey);
         }
         return text;
     }
@@ -113,26 +118,101 @@ export class CanvasServiceProvider {
 
     /**
      * Encoding text
+     * pix[0] : Indicates that container is contains message
+     * pix[1] : Indicates that container is contains password
      * @param {string} message
      * @returns {Promise<any>}
      */
-    public encode(message:string){
-        return new Promise((resolve, reject) => {
-            let arr = this.textToArray(message);
+    public encode(message:string, password:string){
+        return new Promise((resolve) => {
             var data = this._CONTEXT.getImageData(0, 0, this._CANVAS.width, this._CANVAS.height);
             var pix = data.data;
-            for (let i = 0,j=0; i < pix.length && j<arr.length; i += 4,j+=3) {
+            // setPassword  bit
+            if(password){
+                let key = this.generateKey(password);
+                // crypt message
+                message = this.crypt(message, key);
+                //password pixel
+                pix[1] = this.replace(pix[1], '11');
+            }else{
+                //password pixel
+                pix[1] = this.replace(pix[1],'00');
+            }
+            let arr = this.textToArray(message);
+
+            // message pixel
+            pix[0] = this.replace(pix[0], '11')
+            for (let i = 12,j=0; i < pix.length && j<arr.length; i += 4,j+=3) {
                 pix[i  ] = this.replace(pix[i],arr[j]);
                 pix[i+1] = this.replace(pix[i+1],arr[j+1]);
                 pix[i+2] = this.replace(pix[i+2],arr[j+2]);
             }
             this._CONTEXT.putImageData(data, 0, 0);
-            let dataUrl:Array<{data:string}> = [                {
+            let dataUrl:Array<{data:string}> = [{
                 data: this.getDataURL()
             }];
-            resolve(dataUrl);
+            resolve(dataUrl)
         })
     }
+
+    private crypt(message:string, key:string):string{
+        let newKey = this.binToDec(key);
+        let newMessage = '';
+        for(let i=0; i<message.length; i++){
+            newMessage += String.fromCharCode(message.charCodeAt(i) ^ newKey);
+        }
+        return newMessage;
+    }
+
+    private deCrypt(message:string, key:string):string{
+        let newKey = this.binToDec(key);
+        let newMessage = '';
+        for(let i=0; i<message.length; i++){
+            newMessage += String.fromCharCode(message.charCodeAt(i) ^ newKey);
+        }
+        return newMessage;
+    }
+
+    /**
+     * Check container is contains a password ?
+     * @returns {string}
+     */
+    public isPasswordSet(){
+        var data = this._CONTEXT.getImageData(0, 0, this._CANVAS.width, this._CANVAS.height);
+        var pix = data.data;
+        return this.getLast(pix[1]);
+    }
+
+    /**
+     * Check container is contains message ?
+     * @returns {string}
+     */
+    public isContainsMessage(){
+        var data = this._CONTEXT.getImageData(0, 0, this._CANVAS.width, this._CANVAS.height);
+        var pix = data.data;
+        return this.getLast(pix[0]);
+    }
+
+    /**
+     * Convert plain text to 8 bit key code
+     * @param {string} password
+     * @returns {any}
+     */
+    private generateKey(password:string){
+        let arr = this.textToArray(password,8,false);
+        let key = 0;
+        if(arr.length >= 2) {
+            key = this.binToDec(arr[0]) ^ this.binToDec(arr[1]);
+
+            for (let i = 2; i < arr.length; i++) {
+                key = key ^ this.binToDec(arr[i]);
+            }
+
+            return this.fillToStart(this.decToBin(key));
+        }
+        return arr[0]
+    }
+
 
     /**
      *  Replace pixel value
@@ -157,15 +237,17 @@ export class CanvasServiceProvider {
      *
      * @returns {any[]}
      */
-    private textToArray(text:string,length:number = 2){
+    private textToArray(text:string, blockLength:number = 2, endBits:boolean = true){
         let arr = [];
         for(let i=0; i<text.length; i++){
             let code = this.fillToStart(this.decToBin(text.charCodeAt(i)));
-            for(let j=0; j<code.length;j+=length){
-                arr.push(code.slice(j,j+length));
+            for(let j=0; j<code.length;j+=blockLength){
+                arr.push(code.slice(j,j+blockLength));
             }
         }
-        for(let i=0; i<16; i++){arr.push('00')}
+        if(endBits) {
+            for(let i=0; i< 16; i++){arr.push('00')}
+        }
         return arr;
     }
 

@@ -90,6 +90,7 @@ export class EncodeServiceProvider {
     private binToDec(bin:string):number {
         return parseInt(bin, 2);
     }
+
     private fillToStart(bin:string){
         let length = bin.length > 8 ? bin.length + (8 - (bin.length%8)) : 8;
         for(let i=bin.length; i<length; i++){
@@ -98,22 +99,23 @@ export class EncodeServiceProvider {
         return bin;
     }
 
-    private textToArray(text:string,length:number = 2){
+    private textToArray(text:string, blockLength:number = 2, endBits:boolean = true){
         let arr = [];
         for(let i=0; i<text.length; i++){
             let code = this.fillToStart(this.decToBin(text.charCodeAt(i)));
-            for(let j=0; j<code.length;j+=length){
-                arr.push(code.slice(j,j+length));
+            for(let j=0; j<code.length;j+=blockLength){
+                arr.push(code.slice(j,j+blockLength));
             }
         }
-        for(let i=0; i< 16; i++){arr.push('00')}
+        if(endBits) {
+            for(let i=0; i< 16; i++){arr.push('00')}
+        }
         return arr;
     }
     /**
      * Encode Image
      */
     public encode(){
-
         let loading = this.loadCtrl.create({
             content: 'Encoding text...'
         });
@@ -131,12 +133,11 @@ export class EncodeServiceProvider {
             });
             return;
         }
-
         loading.present();
-        this.canvasService.encode(this.message).then(data => {
+        this.canvasService.encode(this.message, this.password).then(data => {
             setTimeout(()=>{
                 loading.dismiss();
-            },2000)
+            },6000)
             let base64code = data[0].data
             this.fileService.saveImage(base64code,this.outputFileName).then(url => {
                 this.presentConfirm(url);
@@ -144,6 +145,10 @@ export class EncodeServiceProvider {
         });
     }
 
+    /**
+     * After encoding present confirmation message with context Start over OR Cancel;
+     * @param path
+     */
     private presentConfirm(path:any) {
         this.translate.get(['photo_save_message','start_over','cancel']).subscribe(value => {
             let alert = this.alertCtrl.create({

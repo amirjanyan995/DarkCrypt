@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {Camera} from "@ionic-native/camera";
 import {PhotoServiceProvider} from "../photo-service/photo-service";
-import {LoadingController, ToastController} from "ionic-angular";
+import {AlertController, LoadingController, ToastController} from "ionic-angular";
 import {Clipboard} from "@ionic-native/clipboard";
 import {SuperTabsController} from "ionic2-super-tabs";
 import {TranslateService} from "@ngx-translate/core";
@@ -16,11 +16,13 @@ export class DecodeServiceProvider {
 
     private lastImage:any = null;
     private lastPath:any = null;
-    public message:string;
+    private message:string;
+    private decodeKey:string;
 
     private pleaseWait:string;
 
     constructor(
+        public alertCtrl:AlertController,
         public canvasService: CanvasServiceProvider,
         public toastCtrl: ToastController,
         public translate: TranslateService,
@@ -75,14 +77,60 @@ export class DecodeServiceProvider {
             content: 'Decoding text...'
         });
 
-        loading.present();
+        if(this.canvasService.isContainsMessage() != '11'){
+            this.translate.get('message_not_found').subscribe(value => {
+                this.presentToast(value, 'bottom')
+            })
+            return;
+        }
 
-        setTimeout(() => {
+        if(this.canvasService.isPasswordSet() != '11') {
+            //decode
+            loading.present();
+            this.message = this.canvasService.decode(this.decodeKey);
+            this.superTabsCtrl.slideTo('decodeTextTab');
             loading.dismiss();
-        },4000);
-
-        this.message = this.canvasService.decode();
-        this.superTabsCtrl.slideTo('decodeTextTab');
+        }else{
+            this.presentPrompt().then(()=>{
+                //decode
+                loading.present();
+                this.message = this.canvasService.decode(this.decodeKey);
+                this.superTabsCtrl.slideTo('decodeTextTab');
+                console.log('password set');
+                loading.dismiss();
+            });
+        }
+    }
+    private presentPrompt() {
+        return new Promise(resolve => {
+            this.translate.get(['decode_password','password','cancel']).subscribe(value => {
+                let alert = this.alertCtrl.create({
+                    title: '',
+                    message: value['decode_password'],
+                    inputs: [
+                        {
+                            name: 'password',
+                            placeholder: value['password'],
+                            type: 'password'
+                        }
+                    ],
+                    buttons: [
+                        {
+                            text: value['cancel'],
+                            role: 'cancel'
+                        },
+                        {
+                            text: 'OK',
+                            handler: data => {
+                                this.decodeKey = data.password;
+                                resolve('success');
+                            }
+                        }
+                    ]
+                });
+                alert.present();
+            });
+        })
     }
 
     /**

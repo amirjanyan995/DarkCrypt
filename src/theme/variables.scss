@@ -5,6 +5,7 @@ $font-path: "../assets/fonts";
 @import "ionic.globals";
 
 
+
 // Shared Variables
 // --------------------------------------------------
 // To customize the look and feel of this app, you can override
@@ -24,6 +25,13 @@ $font-path: "../assets/fonts";
 // The "primary" color is the only required color in the map.
 
 $white: #FFFFFF;
+
+$back: #263c40;
+$back-l: #304b50;
+$back-h: #131e20;
+
+$border: #37c488;
+
 $white-a: darken($white, 3%);
 $white-b: darken($white, 6%);
 $white-c: darken($white, 12%);
@@ -43,7 +51,7 @@ $theme-color-4: #ae75e7;
 $colors: (
         white:      #ffffff,
         custom:     #387ef5,
-        primary:    #565555,
+        primary:    $border,
         secondary:  #26bf7e,
         danger:     #ed4f50,
         light:      #f4f4f4,

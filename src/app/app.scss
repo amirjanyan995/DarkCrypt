@@ -1,7 +1,7 @@
-//ion-content {
-//  background-color: #263E44 !important;
-//  color:#fff;
-//}
+ion-content {
+  @import "dark.theme";
+  //background-color: $back !important;
+}
 
 .fixed-buttom{
   position: absolute;
@@ -56,7 +56,7 @@
   font-size: 30px;
   letter-spacing: 4px;
   word-spacing: 35px;
-  color: #000000;
+  color: $border;
   font-weight: 700;
   text-decoration: none;
   font-style: normal;
@@ -84,4 +84,7 @@
       color: white;
     }
   }
+}
+.list-header-md{
+  margin-bottom: 0px !important;
 }

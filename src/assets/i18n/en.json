@@ -31,5 +31,7 @@
   "please_wait": "Please wait.",
   "photo_save_message": "Photo saved to:",
   "start_over": "Start Over",
-  "cancel": "Cancel"
+  "cancel": "Cancel",
+  "decode_password": "Please enter the password",
+  "message_not_found": "The selected photo does not contain encoded text"
 }
