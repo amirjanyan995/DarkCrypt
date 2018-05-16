@@ -56,53 +56,60 @@ export class CanvasServiceProvider {
      * @returns {string}
      */
     public decode(key:string){
-        var data = this._CONTEXT.getImageData(0, 0, this._CANVAS.width, this._CANVAS.height);
-        var pix = data.data;
-        var i,j;
-        let arr = [];
-        let count=0;
-        for (i = 12,j=0; i < pix.length; i += 4,j+=3) {
-            let a = this.getLast(pix[i]);
-            arr.push(a);
-            if(!this.binToDec(a)) {
-                count++;
-                if(count>=16)break;
-            }else count=0
+        return new Promise(resolve => {
 
-            a = this.getLast(pix[i+1]);
-            arr.push(a)
-            if(!this.binToDec(a)) {
-                count++;
-                if(count>=16)break;
-            }else count=0
+            var data = this._CONTEXT.getImageData(0, 0, this._CANVAS.width, this._CANVAS.height);
+            var pix = data.data;
+            var i,j;
+            let arr = [];
+            let count=0;
+            for (i = 16,j=0; i < pix.length; i += 4,j+=3) {
+                let a = this.getLast(pix[i]);
+                arr.push(a);
+                if(!this.binToDec(a)) {
+                    count++;
+                    if(count>=16)break;
+                }else count=0
 
-            a = this.getLast(pix[i+2]);
-            arr.push(a)
-            if(!this.binToDec(a)) {
-                count++;
-                if(count>=16)break;
-            }else count=0
+                a = this.getLast(pix[i+1]);
+                arr.push(a)
+                if(!this.binToDec(a)) {
+                    count++;
+                    if(count>=16)break;
+                }else count=0
 
-        }
-        let text:string='';
-        let symbols = [10]; // enter button
-        arr = arr.slice(0,arr.length - 16);
-        for(let i=0; i < arr.length;i+=4){
-            let code = arr[i]+arr[i+1]+arr[i+2]+arr[i+3];
-            if(this.binToDec(code) < 32
-                && symbols.indexOf(this.binToDec(code)) === -1
-                && (i+4) < arr.length)
-            {
-                i+=4;
-                code += arr[i]+arr[i+1]+arr[i+2]+arr[i+3];
+                a = this.getLast(pix[i+2]);
+                arr.push(a)
+                if(!this.binToDec(a)) {
+                    count++;
+                    if(count>=16)break;
+                }else count=0
+                console.log(i);
             }
-            text+=String.fromCharCode(this.binToDec(code));
-        }
-        if(key){
-            let newKey = this.generateKey(key);
-            text = this.deCrypt(text,newKey);
-        }
-        return text;
+            let text:string='';
+            let symbols = [10]; // enter button
+            arr = arr.slice(0,arr.length - 16);
+            for(let i=0; i < arr.length;i+=4){
+                let code = arr[i]+arr[i+1]+arr[i+2]+arr[i+3];
+                if(this.binToDec(code) < 32
+                    && symbols.indexOf(this.binToDec(code)) === -1
+                    && (i+4) < arr.length)
+                {
+                    i+=4;
+                    code += arr[i]+arr[i+1]+arr[i+2]+arr[i+3];
+                }
+                text+=String.fromCharCode(this.binToDec(code));
+            }
+            if(key){
+                let newKey = this.generateKey(key);
+                text = this.deCrypt(text,newKey);
+            }
+
+            let message:Array<{message:string}> = [{
+                message: text
+            }];
+            resolve(message)
+        });
     }
 
     /**
@@ -116,6 +123,18 @@ export class CanvasServiceProvider {
         return code.slice(code.length-2,code.length);
     }
 
+    public readPassword():string{
+        var data = this._CONTEXT.getImageData(0, 0, this._CANVAS.width, this._CANVAS.height);
+        var pix = data.data;
+        let key = '';
+        for(let i=8;i<16;i+=4){
+            key += this.getLast(pix[i]);
+            key += this.getLast(pix[i+1]);
+            key += this.getLast(pix[i+2]);
+        }
+        return key.slice(0,key.length - 4);
+    }
+
     /**
      * Encoding text
      * pix[0] : Indicates that container is contains message
@@ -127,22 +146,33 @@ export class CanvasServiceProvider {
         return new Promise((resolve) => {
             var data = this._CONTEXT.getImageData(0, 0, this._CANVAS.width, this._CANVAS.height);
             var pix = data.data;
-            // setPassword  bit
+
+            // message pixel
+            pix[0] = this.replace(pix[0], '01')
+            pix[1] = this.replace(pix[1], '01')
+            pix[2] = this.replace(pix[2], '11')
+
             if(password){
                 let key = this.generateKey(password);
                 // crypt message
                 message = this.crypt(message, key);
-                //password pixel
-                pix[1] = this.replace(pix[1], '11');
-            }else{
-                //password pixel
-                pix[1] = this.replace(pix[1],'00');
+                //key pixel
+                pix[4] = this.replace(pix[4], '01');
+                pix[5] = this.replace(pix[5], '01');
+                pix[6] = this.replace(pix[6], '11');
+
+                let keyArr = this.slice(key);
+                // write key
+                pix[8] = this.replace(pix[8], keyArr[0]);
+                pix[9] = this.replace(pix[9], keyArr[1]);
+                pix[10] = this.replace(pix[10], keyArr[2]);
+                pix[12] = this.replace(pix[12], keyArr[3]);
+                pix[13] = this.replace(pix[13], '00');
+                pix[14] = this.replace(pix[14], '00');
+                // end
             }
             let arr = this.textToArray(message);
-
-            // message pixel
-            pix[0] = this.replace(pix[0], '11')
-            for (let i = 12,j=0; i < pix.length && j<arr.length; i += 4,j+=3) {
+            for (let i = 16,j=0; i < pix.length && j<arr.length; i += 4,j+=3) {
                 pix[i  ] = this.replace(pix[i],arr[j]);
                 pix[i+1] = this.replace(pix[i+1],arr[j+1]);
                 pix[i+2] = this.replace(pix[i+2],arr[j+2]);
@@ -155,6 +185,9 @@ export class CanvasServiceProvider {
         })
     }
 
+    /**
+     * Encode message using key
+     */
     private crypt(message:string, key:string):string{
         let newKey = this.binToDec(key);
         let newMessage = '';
@@ -164,6 +197,9 @@ export class CanvasServiceProvider {
         return newMessage;
     }
 
+    /**
+     * Decode message using key
+     */
     private deCrypt(message:string, key:string):string{
         let newKey = this.binToDec(key);
         let newMessage = '';
@@ -177,20 +213,25 @@ export class CanvasServiceProvider {
      * Check container is contains a password ?
      * @returns {string}
      */
-    public isPasswordSet(){
+    public isPasswordSet():boolean {
         var data = this._CONTEXT.getImageData(0, 0, this._CANVAS.width, this._CANVAS.height);
         var pix = data.data;
-        return this.getLast(pix[1]);
+
+        return (this.getLast(pix[4]) === '01')
+            &&(this.getLast(pix[5]) === '01')
+            &&(this.getLast(pix[6]) === '11');
     }
 
     /**
      * Check container is contains message ?
      * @returns {string}
      */
-    public isContainsMessage(){
+    public isContainsMessage():boolean {
         var data = this._CONTEXT.getImageData(0, 0, this._CANVAS.width, this._CANVAS.height);
         var pix = data.data;
-        return this.getLast(pix[0]);
+        return (this.getLast(pix[0]) === '01')
+            &&(this.getLast(pix[1]) === '01')
+            &&(this.getLast(pix[2]) === '11');
     }
 
     /**
@@ -198,7 +239,7 @@ export class CanvasServiceProvider {
      * @param {string} password
      * @returns {any}
      */
-    private generateKey(password:string){
+    public generateKey(password:string){
         let arr = this.textToArray(password,8,false);
         let key = 0;
         if(arr.length >= 2) {
@@ -212,6 +253,22 @@ export class CanvasServiceProvider {
         }
         return arr[0]
     }
+
+    /**
+     *
+     *
+     * @param {string} message
+     * @param {number} length
+     * @returns {any[]}
+     */
+    private slice(message:string, length:number = 2){
+        let arr=[]
+        for(let i=0;i<message.length;i+=length){
+            arr.push(message.slice(i,i+length))
+        }
+        return arr;
+    }
+
 
 
     /**

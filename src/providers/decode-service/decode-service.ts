@@ -14,8 +14,8 @@ import {Storage} from "@ionic/storage";
 @Injectable()
 export class DecodeServiceProvider {
 
-    private lastImage:any = null;
-    private lastPath:any = null;
+    private lastImage:string = null;
+    private lastPath:string = null;
     private message:string;
     private decodeKey:string;
 
@@ -70,62 +70,68 @@ export class DecodeServiceProvider {
     }
 
     /**
-     * Decode Image
+     * Decode Text
      */
     public decode(){
         let loading = this.loadCtrl.create({
             content: 'Decoding text...'
         });
 
-        if(this.canvasService.isContainsMessage() != '11'){
+        if(!this.canvasService.isContainsMessage()) {
             this.translate.get('message_not_found').subscribe(value => {
                 this.presentToast(value, 'bottom')
             })
             return;
         }
 
-        if(this.canvasService.isPasswordSet() != '11') {
+        if(!this.canvasService.isPasswordSet()) {
             //decode
             loading.present();
-            this.message = this.canvasService.decode(this.decodeKey);
-            this.superTabsCtrl.slideTo('decodeTextTab');
-            loading.dismiss();
+            this.canvasService.decode(this.decodeKey).then(data => {
+                this.message = data[0].message;
+                this.superTabsCtrl.slideTo('decodeTextTab');
+                loading.dismiss();
+            });
         }else{
             this.presentPrompt().then(()=>{
-                //decode
-                loading.present();
-                this.message = this.canvasService.decode(this.decodeKey);
-                this.superTabsCtrl.slideTo('decodeTextTab');
-                console.log('password set');
-                loading.dismiss();
+                if(this.canvasService.generateKey(this.decodeKey) === this.canvasService.readPassword()){
+                    loading.present();
+                    this.canvasService.decode(this.decodeKey).then(data => {
+                        this.message = data[0].message;
+                        this.superTabsCtrl.slideTo('decodeTextTab');
+                        loading.dismiss();
+                    });
+                }else {
+                    this.presentToast('Incorrect password','buttom');
+                }
             });
         }
     }
+
+    /**
+     * Alert please enter the password:
+     * @returns {Promise<any>}
+     */
     private presentPrompt() {
         return new Promise(resolve => {
             this.translate.get(['decode_password','password','cancel']).subscribe(value => {
                 let alert = this.alertCtrl.create({
                     title: '',
                     message: value['decode_password'],
-                    inputs: [
-                        {
-                            name: 'password',
-                            placeholder: value['password'],
-                            type: 'password'
-                        }
-                    ],
-                    buttons: [
-                        {
-                            text: value['cancel'],
-                            role: 'cancel'
-                        },
-                        {
-                            text: 'OK',
-                            handler: data => {
-                                this.decodeKey = data.password;
-                                resolve('success');
-                            }
-                        }
+                    inputs: [{
+                        name: 'password',
+                        placeholder: value['password'],
+                        type: 'password'
+                    }],
+                    buttons: [{
+                        text: value['cancel'],
+                        role: 'cancel'
+                    },{
+                        text: 'OK',
+                        handler: data => {
+                            this.decodeKey = data.password;
+                            resolve('success');
+                        }}
                     ]
                 });
                 alert.present();
@@ -219,8 +225,8 @@ export class DecodeServiceProvider {
     get pathToImage(){
         if(this.lastPath != null && this.lastImage != null) {
             return this.lastPath + this.lastImage;
-        } else {
-            return Const.DEFAULT_IMG;
         }
+        return Const.DEFAULT_IMG;
+
     }
 }

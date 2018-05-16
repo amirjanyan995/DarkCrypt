@@ -4,7 +4,7 @@
             <img [src]="decodeService.pathToImage" (click)="decodeService.showImg()" />
             <canvas #canvas style="display: none"></canvas>
         </ion-card-content>
-        <ion-item *ngIf="decodeService.lastImage">
+        <ion-item *ngIf="decodeService.lastImage && decodeService.lastPath">
             <button ion-button color="dark" clear item-start  (click)="decodeService.removePhoto()">
                 <ion-icon name="trash"></ion-icon>
             </button>

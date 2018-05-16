@@ -15,13 +15,13 @@
                 <ion-option *ngFor="let language of languages" value="{{ language.value }}">{{ language.name }}</ion-option>
             </ion-select>
         </ion-item>
-        <ion-item>
-            <ion-label>
-                <span translate>character</span>
-            </ion-label>
-            <ion-select [(ngModel)]="characterType" (ionChange)="selectCharacterType()">
-                <ion-option *ngFor="let type of charactersType" value="{{ type.value }}">{{ type.name }}</ion-option>
-            </ion-select>
-        </ion-item>
+        <!--<ion-item>-->
+            <!--<ion-label>-->
+                <!--<span translate>character</span>-->
+            <!--</ion-label>-->
+            <!--<ion-select [(ngModel)]="characterType" (ionChange)="selectCharacterType()">-->
+                <!--<ion-option *ngFor="let type of charactersType" value="{{ type.value }}">{{ type.name }}</ion-option>-->
+            <!--</ion-select>-->
+        <!--</ion-item>-->
     </ion-list>
 </ion-content>

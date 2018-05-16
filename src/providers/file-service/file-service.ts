@@ -146,11 +146,11 @@ export class FileServiceProvider {
      *  Create a new name for the image
      * @returns {string}
      */
-    public createTempFileName() {
+    public createTempFileName(extension:boolean = true) {
         var d = new Date(),
             name = d.getTime().toString();
 
-        var newFileName = name + '.png';
+        var newFileName = (extension) ? name + '.png' : name;
         return newFileName;
     }
 

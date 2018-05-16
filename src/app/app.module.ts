@@ -49,6 +49,7 @@ import { DecodeServiceProvider } from '../providers/decode-service/decode-servic
 import { EncodeServiceProvider } from '../providers/encode-service/encode-service';
 import { PhotoServiceProvider } from '../providers/photo-service/photo-service';
 import { CanvasServiceProvider } from '../providers/canvas-service/canvas-service';
+import { FunctionsServiceProvider } from '../providers/functions-service/functions-service';
 
 @NgModule({
     declarations: [
@@ -120,7 +121,8 @@ import { CanvasServiceProvider } from '../providers/canvas-service/canvas-servic
         DecodeServiceProvider,
         EncodeServiceProvider,
         PhotoServiceProvider,
-        CanvasServiceProvider
+        CanvasServiceProvider,
+    FunctionsServiceProvider
     ]
 })
 

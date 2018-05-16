@@ -61,7 +61,6 @@ export class EncodeServiceProvider {
                 this.lastPath = data[0].path
                 this.canvasService.drawImg(this.lastPath + this.lastImage);
             }).catch(err => {
-                console.log(err);
                 this.presentToast('Something went wrong.');
             })
         }
@@ -135,11 +134,9 @@ export class EncodeServiceProvider {
         }
         loading.present();
         this.canvasService.encode(this.message, this.password).then(data => {
-            setTimeout(()=>{
-                loading.dismiss();
-            },6000)
             let base64code = data[0].data
             this.fileService.saveImage(base64code,this.outputFileName).then(url => {
+                loading.dismiss();
                 this.presentConfirm(url);
             })
         });
@@ -224,7 +221,7 @@ export class EncodeServiceProvider {
      */
     public update(){
         this.message = '';
-        this.outputFileName = '';
+        this.outputFileName = this.fileService.createTempFileName(false);
         this.password = '';
 
         // update data received form storage.
