@@ -81,7 +81,7 @@ export class DecodeServiceProvider {
             this.translate.get('message_not_found').subscribe(value => {
                 this.presentToast(value, 'bottom')
             })
-            return;
+             return;
         }
 
         if(!this.canvasService.isPasswordSet()) {
@@ -94,6 +94,9 @@ export class DecodeServiceProvider {
             });
         }else{
             this.presentPrompt().then(()=>{
+
+                // console.log(this.canvasService.generateKey(this.decodeKey));
+                // console.log(this.canvasService.readPassword());
                 if(this.canvasService.generateKey(this.decodeKey) === this.canvasService.readPassword()){
                     loading.present();
                     this.canvasService.decode(this.decodeKey).then(data => {

@@ -84,20 +84,11 @@ export class CanvasServiceProvider {
                     count++;
                     if(count>=16)break;
                 }else count=0
-                console.log(i);
             }
             let text:string='';
-            let symbols = [10]; // enter button
             arr = arr.slice(0,arr.length - 16);
-            for(let i=0; i < arr.length;i+=4){
-                let code = arr[i]+arr[i+1]+arr[i+2]+arr[i+3];
-                if(this.binToDec(code) < 32
-                    && symbols.indexOf(this.binToDec(code)) === -1
-                    && (i+4) < arr.length)
-                {
-                    i+=4;
-                    code += arr[i]+arr[i+1]+arr[i+2]+arr[i+3];
-                }
+            for(let i=0; i < arr.length;i+=8){
+                let code = arr[i]+arr[i+1]+arr[i+2]+arr[i+3]+arr[i+4]+arr[i+5]+arr[i+6]+arr[i+7];
                 text+=String.fromCharCode(this.binToDec(code));
             }
             if(key){
@@ -249,7 +240,7 @@ export class CanvasServiceProvider {
                 key = key ^ this.binToDec(arr[i]);
             }
 
-            return this.fillToStart(this.decToBin(key));
+            return this.fillToStart(this.decToBin(key), 8);
         }
         return arr[0]
     }
@@ -311,8 +302,7 @@ export class CanvasServiceProvider {
     /**
      * Fill to start '110101' => '00110101'
      */
-    private fillToStart(bin:string){
-        let length = bin.length > 8 ? bin.length + (8 - (bin.length%8)) : 8;
+    private fillToStart(bin:string, length:number=16){
         for(let i=bin.length; i<length; i++){
             bin = '0' + bin;
         }
